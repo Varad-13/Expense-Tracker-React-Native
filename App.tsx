@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {NativeRouter, Route, Routes} from 'react-router-native';
 import Dashboard from './src/screens/dashboard';
 import ExpensesList from './src/screens/expenses';
+import WipScreen from './src/screens/wip';
 import { connectToDatabase, createTables } from './src/db/db';
 
 
@@ -47,9 +48,9 @@ function App(): JSX.Element {
 
   const renderScene = Screens.SceneMap({
     dashboard: () => <Dashboard/>,
-    cards: () => <Dashboard/>,
-    calendar: () => <Dashboard/>,
-    analytics: () => <Dashboard/>,
+    cards: () => <WipScreen/>,
+    calendar: () => <WipScreen/>,
+    analytics: () => <WipScreen/>,
     expenses: () => <ExpensesList/>,
   });
 
@@ -66,6 +67,28 @@ function App(): JSX.Element {
                   onIndexChange={setIndex}
                   renderScene={renderScene}
                 />
+              }
+            />
+            <Route
+              path="/index"
+              element={ 
+                <Screens
+                  navigationState={{index, routes}}
+                  onIndexChange={setIndex}
+                  renderScene={renderScene}
+                />
+              }
+            />
+            <Route
+              path="/expenseList"
+              element={ 
+                <ExpensesList/>
+              }
+            />
+            <Route
+              path="/wip"
+              element={ 
+                <WipScreen/>
               }
             />
           </Routes>

@@ -14,7 +14,7 @@ import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
 
-const ExpenseList = () => {
+const WipScreen = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
@@ -112,67 +112,17 @@ const ExpenseList = () => {
     },
   });
 
-  
-  const expenses = [
-    { id: '1', title: 'Groceries', amount: '$50' },
-    { id: '2', title: 'Gas', amount: '$30' },
-    { id: '3', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    // Add more expenses as needed
-  ];
-
-
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.appBar}>
-        <Appbar.Content title="Expenses" />
-        <IconButton icon="bank-plus" onPress={() => navigate("/wip")}   />
-        <Appbar.Action icon="bell-outline" onPress={() => navigate("/wip")} style={styles.icon} />
-        <Appbar.Action icon="account-outline" onPress={() => navigate("/wip")} style={styles.icon} />
+        <Appbar.BackAction onPress={() => navigate("/index")}/>
+        <Appbar.Content title="Work-in-Progress" />
       </Appbar.Header>
-      <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-            <View style={styles.cardContainer}>
-              {expenses.map((expense) => (
-                <View style={styles.atmCard}>
-                    <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.title}</Text>
-                        <Text style={styles.expenseText}>{expense.amount}</Text>
-                    </View>
-                    <View style={styles.buttonContainer}>
-                        <IconButton
-                            icon="delete"
-                            iconColor={theme.colors.error}
-                            size={20}
-                            onPress={() => console.log('Pressed')}
-                        />
-                        <IconButton
-                            icon="pencil"
-                            iconColor={theme.colors.secondary}
-                            size={20}
-                            onPress={() => console.log('Pressed')}
-                        />
-                    </View>
-                </View>
-              ))}
-          </View>
-        </View>
-      </ScrollView>
+      <View style={{flex:1, justifyContent:"center"}}>
+        <Text style={{alignSelf:'center'}}>Oops! Looks like you reached the end</Text>
+      </View>
     </View>
   );
 };
   
-export default withTheme(ExpenseList) ;
+export default withTheme(WipScreen) ;
