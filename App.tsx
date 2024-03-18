@@ -1,118 +1,67 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import * as React from 'react';
+import { useState } from 'react'
+import { StyleSheet, View} from 'react-native';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
+  MD3LightTheme as DefaultTheme,
+  Provider as PaperProvider,
+  BottomNavigation as Screens,
   Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+} from 'react-native-paper';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {NativeRouter, Route, Routes} from 'react-router-native';
+import ChatScreen from './src/screens/chat';
+import Dashboard from './src/screens/dashboard';
 
-type SectionProps = PropsWithChildren<{
+interface NavRoutes {
+  key: string;
   title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+  focusedIcon: string;
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function App(): JSX.Element {
+  const [index, setIndex] = useState(0);
+  const [routes] = useState<NavRoutes[]>([
+    {key: 'dashboard', title: 'Home', unfocusedIcon:'home-outline', focusedIcon: 'home'},
+    {key: 'analytics', title: 'Insights', focusedIcon: 'google-analytics'},
+    {key: 'expenses', title: 'Expenses', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
+  ]);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const renderScene = Screens.SceneMap({
+    dashboard: () => <Dashboard/>,
+    cards: () => <Dashboard/>,
+    analytics: () => <Dashboard/>,
+    expenses: () => <Dashboard/>,
+  });
+
+  const theme = {
+    ...DefaultTheme,
+    // Specify custom property
+    // Specify custom property in nested object
   };
+  
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <PaperProvider>
+        <NativeRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Screens
+                  navigationState={{index, routes}}
+                  onIndexChange={setIndex}
+                  renderScene={renderScene}
+                />
+              }
+            />
+            <Route path="/chat/:chatId" element={<ChatScreen />} />
+          </Routes>
+        </NativeRouter>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
