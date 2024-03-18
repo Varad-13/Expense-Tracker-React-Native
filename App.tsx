@@ -10,8 +10,8 @@ import {
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {NativeRouter, Route, Routes} from 'react-router-native';
-import ChatScreen from './src/screens/chat';
 import Dashboard from './src/screens/dashboard';
+import ExpensesList from './src/screens/expenses';
 
 interface NavRoutes {
   key: string;
@@ -23,6 +23,7 @@ function App(): JSX.Element {
   const [index, setIndex] = useState(0);
   const [routes] = useState<NavRoutes[]>([
     {key: 'dashboard', title: 'Home', unfocusedIcon:'home-outline', focusedIcon: 'home'},
+    {key: 'calendar', title: 'Accounts', unfocusedIcon: 'credit-card-chip-outline', focusedIcon: 'credit-card'},
     {key: 'analytics', title: 'Insights', focusedIcon: 'google-analytics'},
     {key: 'expenses', title: 'Expenses', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
   ]);
@@ -30,16 +31,10 @@ function App(): JSX.Element {
   const renderScene = Screens.SceneMap({
     dashboard: () => <Dashboard/>,
     cards: () => <Dashboard/>,
+    calendar: () => <Dashboard/>,
     analytics: () => <Dashboard/>,
-    expenses: () => <Dashboard/>,
+    expenses: () => <ExpensesList/>,
   });
-
-  const theme = {
-    ...DefaultTheme,
-    // Specify custom property
-    // Specify custom property in nested object
-  };
-  
 
   return (
     <SafeAreaProvider>
@@ -56,7 +51,6 @@ function App(): JSX.Element {
                 />
               }
             />
-            <Route path="/chat/:chatId" element={<ChatScreen />} />
           </Routes>
         </NativeRouter>
       </PaperProvider>
