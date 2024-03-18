@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, View} from 'react-native';
 import {
   MD3LightTheme as DefaultTheme,
@@ -12,6 +12,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import {NativeRouter, Route, Routes} from 'react-router-native';
 import Dashboard from './src/screens/dashboard';
 import ExpensesList from './src/screens/expenses';
+import { connectToDatabase, createTables } from './src/db/db';
+
+
+
+
 
 interface NavRoutes {
   key: string;
@@ -27,6 +32,18 @@ function App(): JSX.Element {
     {key: 'analytics', title: 'Insights', focusedIcon: 'google-analytics'},
     {key: 'expenses', title: 'Expenses', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
   ]);
+
+  const loadData = useCallback(async () => {
+    try {
+      const db = await connectToDatabase()
+      await createTables(db)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
+  useEffect(() => {
+    loadData()
+  }, [loadData])
 
   const renderScene = Screens.SceneMap({
     dashboard: () => <Dashboard/>,

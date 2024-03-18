@@ -37,12 +37,12 @@ const ExpenseList = () => {
     },
     cardContainer: {
       padding: 16,
+      alignSelf: 'center'
     },
     atmCard: {
       backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
       padding: 16,
-      marginRight: 16,
       width: 350,
       elevation: 5, // Add elevation for shadow effect
       flexShrink: 1,

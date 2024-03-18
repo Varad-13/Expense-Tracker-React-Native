@@ -25,37 +25,31 @@ const Dashboard = () => {
     },
     container: {
       flex: 1,
-      backgroundColor: theme.colors.backdrop
-    },
-    friend: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 8,
-    },
-    profilePicture: {
-      marginRight: 8,
+      backgroundColor: theme.colors.backdrop,
     },
     cardContainer: {
       flexDirection: 'row',
       padding: 16,
+      alignSelf: 'center'
     },
     atmCard: {
       backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
       padding: 16,
       marginRight: 16,
-      width: 350,
+      width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
-      flexShrink: 1,
+      alignSelf: 'center'
     },
     graphContainer: {
       backgroundColor: theme.colors.surfaceVariant,
       marginBottom: 8,
       borderRadius: 8,
-      width: 350,
+      width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
       flexShrink: 1,
       padding: 8,
+      alignSelf: 'center'
     },
     graphText: {
       fontSize: 18,
@@ -95,10 +89,11 @@ const Dashboard = () => {
     expensesContainer: {
       backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
-      width: 350,
+      width: screenWidth-32,
       elevation: 5,
       flexShrink: 1,
       padding: 8,
+      alignSelf: 'center'
     },
     expenseItem: {
       flexDirection: 'row',
@@ -124,9 +119,9 @@ const Dashboard = () => {
   };
 
   const data = [
-    { id: '1', accountHolder: 'Savings Account', validThru: '12/28', cardNumber: '**** **** **** 1234', cardType: 'VISA' },
-    { id: '2', accountHolder: 'Salary Account', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
-    { id: '3', accountHolder: 'Joint Account', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
+    { id: '1', accountHolder: 'Savings', validThru: '12/28', cardNumber: '**** **** **** 1234', cardType: 'VISA' },
+    { id: '2', accountHolder: 'Salary', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
+    { id: '3', accountHolder: 'Joint', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
     // Add more card data as needed
   ];
   
@@ -199,12 +194,12 @@ const Dashboard = () => {
             </View>
           </ScrollView>
           
-          <View style={styles.cardContainer}>
+          <View style={{alignSelf: 'center'}}>
             <View style={styles.graphContainer}>
               <Text style={styles.cardNumber}>Monthly Limits</Text>
               <ProgressChart
                 data={chartData}
-                width={300}
+                width={screenWidth-48}
                 height={220}
                 strokeWidth={16}
                 radius={32}
@@ -214,6 +209,7 @@ const Dashboard = () => {
                 />
                 <Text style={styles.graphText}>Total Expenses: $ XXXX/xxxx</Text>
             </View>
+            
           </View>
         </View>
 
