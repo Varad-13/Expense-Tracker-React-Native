@@ -22,10 +22,11 @@ const Dashboard = () => {
   const styles = StyleSheet.create({
     appBar: {
       backgroundColor: theme.colors.surfaceVariant,
+      elevation: 1,
     },
     container: {
       flex: 1,
-      backgroundColor: theme.colors.backdrop,
+      backgroundColor: theme.colors.surface,
     },
     cardContainer: {
       flexDirection: 'row',
@@ -33,23 +34,27 @@ const Dashboard = () => {
       alignSelf: 'center'
     },
     atmCard: {
-      backgroundColor: theme.colors.surfaceVariant,
+      backgroundColor: theme.colors.background,
       borderRadius: 8,
       padding: 16,
       marginRight: 16,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
-      alignSelf: 'center'
+      alignSelf: 'center',
+      borderColor: theme.colors.primary,
+      borderWidth: 3,
     },
     graphContainer: {
-      backgroundColor: theme.colors.surfaceVariant,
+      backgroundColor: theme.colors.tertiaryContainer,
       marginBottom: 8,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
       flexShrink: 1,
       padding: 8,
-      alignSelf: 'center'
+      alignSelf: 'center',
+      borderColor: theme.colors.outline,
+      borderWidth: 2,
     },
     graphText: {
       fontSize: 18,
@@ -76,22 +81,22 @@ const Dashboard = () => {
     addButton: {
       marginTop: 8,
       borderRadius: 8,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: theme.colors.onSurfaceVariant
+      backgroundColor: theme.colors.onPrimaryContainer,
     },
     addButtonText: {
       color: theme.colors.surface,
       fontWeight: 'bold',
     },
     expensesContainer: {
-      backgroundColor: theme.colors.surfaceVariant,
+      backgroundColor: theme.colors.secondaryContainer,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5,
       flexShrink: 1,
       padding: 8,
-      alignSelf: 'center'
+      alignSelf: 'center',
+      borderColor: theme.colors.outline,
+      borderWidth: 2,
     },
     expenseItem: {
       flexDirection: 'row',
@@ -106,12 +111,12 @@ const Dashboard = () => {
   });
 
   const chartConfig = {
-    backgroundGradientFrom: theme.colors.surfaceVariant,
-    backgroundGradientTo: theme.colors.surfaceVariant,
+    backgroundGradientFrom: theme.colors.tertiaryContainer,
+    backgroundGradientTo: theme.colors.tertiaryContainer,
     color: (opacity = 1) => {
       const colorOnSurface = Appearance.getColorScheme() === 'dark'
-      ? `rgba(220, 184, 255, ${opacity})` 
-      : `rgba(120, 69, 172, ${opacity})`; 
+      ? `rgba(255, 220, 255, ${opacity})` 
+      : `rgba(100, 40, 70, ${opacity})`; 
       return colorOnSurface
     },
   };
@@ -167,7 +172,6 @@ const Dashboard = () => {
                     mode="contained"
                     onPress={() => console.log(item.id)}
                     style={styles.addButton}
-                    contentStyle={{ height: 40 }} // Adjust height as needed
                   >
                     Add expense
                   </Button>
@@ -175,7 +179,6 @@ const Dashboard = () => {
                     mode="contained"
                     onPress={() => console.log(item.id)}
                     style={styles.addButton}
-                    contentStyle={{ height: 40 }} // Adjust height as needed
                   >
                     Edit limits
                   </Button>
