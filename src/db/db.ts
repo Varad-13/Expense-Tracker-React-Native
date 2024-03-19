@@ -17,13 +17,15 @@ export const connectToDatabase = async () => {
 export const createTables = async (db: SQLiteDatabase) => {
   const categoryQuery = `
     CREATE TABLE IF NOT EXISTS category (
-      categoryName TEXT PRIMARY KEY
+      categoryName TEXT PRIMARY KEY,
+      broaderCategory TEXT PRIMARY KEY
     );
   `;
 
   const cardQuery = `
     CREATE TABLE IF NOT EXISTS card (
-      cardName TEXT,
+      nickname TEXT,
+      holderName TEXT,
       cardType TEXT,
       cardProvider TEXT,
       bankName TEXT,
@@ -37,9 +39,10 @@ export const createTables = async (db: SQLiteDatabase) => {
 
   const bankQuery = `
     CREATE TABLE IF NOT EXISTS bank (
-      holderName TEXT PRIMARY KEY,
+      nickname TEXT,
+      holderName TEXT,
       accountType TEXT,
-      accountNumber TEXT,
+      accountNumber TEXT PRIMARY KEY,
       limits INTEGER,
       balance REAL
     );
