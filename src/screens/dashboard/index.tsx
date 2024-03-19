@@ -9,7 +9,7 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 
-import {IconButton, Avatar, Appbar, Card, withTheme, useTheme } from 'react-native-paper';
+import {IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 'react-native-paper';
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
@@ -75,12 +75,10 @@ const Dashboard = () => {
     },  
     addButton: {
       marginTop: 8,
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      backgroundColor: theme.colors.onPrimaryContainer,
       borderRadius: 8,
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: theme.colors.onSurfaceVariant
     },
     addButtonText: {
       color: theme.colors.surface,
@@ -156,42 +154,35 @@ const Dashboard = () => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={styles.cardContainer}>
-              {data.map((item) => (
-                <Card key={item.id} style={styles.atmCard}>
-                  <Text style={styles.cardText}>{item.accountHolder}</Text>
-                  <Text style={styles.cardText}>Valid Thru: {item.validThru}</Text>
-                  <Text style={styles.cardNumber}>{item.cardNumber}</Text>
-                  <Text style={styles.cardText}>Card Type: {item.cardType}</Text>
-                  
-                  <View style={styles.buttonContainer}>
-                    <Pressable
-                      onPress={() => console.log(item.id)}
-                      style={({ pressed }) => [
-                        styles.addButton,
-                        {
-                          opacity: pressed ? 0.6 : 1,
-                        },
-                      ]}
-                    >
-                      <Text style={styles.addButtonText}>Add expense</Text>
-                    </Pressable>
-                    <Pressable
-                      onPress={() => console.log(item.id)}
-                      style={({ pressed }) => [
-                        styles.addButton,
-                        {
-                          opacity: pressed ? 0.6 : 1,
-                        },
-                      ]}
-                    >
-                      <Text style={styles.addButtonText}>Edit limits</Text>
-                    </Pressable>
-                    
-                  </View>
-                </Card>
-              ))}
-            </View>
+          <View style={styles.cardContainer}>
+            {data.map((item) => (
+              <Card key={item.id} style={styles.atmCard}>
+                <Text style={styles.cardText}>{item.accountHolder}</Text>
+                <Text style={styles.cardText}>Valid Thru: {item.validThru}</Text>
+                <Text style={styles.cardNumber}>{item.cardNumber}</Text>
+                <Text style={styles.cardText}>Card Type: {item.cardType}</Text>
+
+                <View style={styles.buttonContainer}>
+                  <Button
+                    mode="contained"
+                    onPress={() => console.log(item.id)}
+                    style={styles.addButton}
+                    contentStyle={{ height: 40 }} // Adjust height as needed
+                  >
+                    Add expense
+                  </Button>
+                  <Button
+                    mode="contained"
+                    onPress={() => console.log(item.id)}
+                    style={styles.addButton}
+                    contentStyle={{ height: 40 }} // Adjust height as needed
+                  >
+                    Edit limits
+                  </Button>
+                </View>
+              </Card>
+            ))}
+          </View>
           </ScrollView>
           
           <View style={{alignSelf: 'center'}}>
