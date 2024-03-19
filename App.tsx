@@ -17,8 +17,6 @@ import { connectToDatabase, createTables } from './src/db/db';
 
 
 
-
-
 interface NavRoutes {
   key: string;
   title: string;

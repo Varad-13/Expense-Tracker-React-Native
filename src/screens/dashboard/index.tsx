@@ -207,7 +207,7 @@ const Dashboard = () => {
                 hideLegend={false}
                 style={styles.cardNumber}
                 />
-                <Text style={styles.graphText}>Total Expenses: $ XXXX/xxxx</Text>
+                <Text style={styles.graphText}>Limits: $1200/1800</Text>
             </View>
             
           </View>
@@ -215,7 +215,7 @@ const Dashboard = () => {
 
         <View style={styles.cardContainer}>
           <View style={styles.expensesContainer}>
-              <Text style={styles.cardNumber}>Expenses</Text>
+              <Text style={styles.cardNumber}>Recent Transactions</Text>
               {expenses.map((expense) => (
                 <View key={expense.id} style={styles.expenseItem}>
                   <Text style={styles.expenseText}>{expense.title}</Text>
