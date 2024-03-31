@@ -61,7 +61,6 @@ export const createTables = async (db: SQLiteDatabase) => {
       category TEXT,
       type TEXT,
       accountId INTEGER,
-      category TEXT,
       FOREIGN KEY (accountId) REFERENCES account(id)
     );
   `;
@@ -77,59 +76,5 @@ export const createTables = async (db: SQLiteDatabase) => {
   } catch (error) {
     console.error('Error creating tables:', error);
     throw new Error('Failed to create tables');
-  }
-};
-
-export const createCard = async(cardData) => {
-  try {
-    const db = await connectToDatabase();
-    const { nickname, holderName, cardType, cardProvider, bankName, validity, cardNumber, CVV, limits } = cardData;
-    await db.executeSql(`
-      INSERT INTO card (nickname, holderName, cardType, cardProvider, bankName, validity, cardNumber, CVV, limits)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [nickname, holderName, cardType, cardProvider, bankName, validity, cardNumber, CVV, limits]);
-    console.log('Card created successfully');
-  } catch (error) {
-    console.error('Error creating card:', error);
-    throw new Error('Failed to create card');
-  }
-};
-
-export const getAllCards = async() => {
-  try {
-    const db = await connectToDatabase();
-    const [results] = await db.executeSql('SELECT * FROM card');
-    const cards = results.rows.raw();
-    return cards;
-  } catch (error) {
-    console.error('Error fetching cards:', error);
-    throw new Error('Failed to fetch cards');
-  }
-};
-
-export const updateCard = async(cardNumber, updatedData) => {
-  try {
-    const db = await connectToDatabase();
-    const { nickname, holderName, cardType, cardProvider, bankName, validity, CVV, limits } = updatedData;
-    await db.executeSql(`
-      UPDATE card
-      SET nickname = ?, holderName = ?, cardType = ?, cardProvider = ?, bankName = ?, validity = ?, CVV = ?, limits = ?
-      WHERE cardNumber = ?
-    `, [nickname, holderName, cardType, cardProvider, bankName, validity, CVV, limits, cardNumber]);
-    console.log('Card updated successfully');
-  } catch (error) {
-    console.error('Error updating card:', error);
-    throw new Error('Failed to update card');
-  }
-};
-
-export const deleteCard = async(cardNumber) => {
-  try {
-    const db = await connectToDatabase();
-    await db.executeSql('DELETE FROM card WHERE cardNumber = ?', [cardNumber]);
-    console.log('Card deleted successfully');
-  } catch (error) {
-    console.error('Error deleting card:', error);
-    throw new Error('Failed to delete card');
   }
 };
