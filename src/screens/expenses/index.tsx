@@ -70,6 +70,8 @@ const ExpenseList = () => {
       elevation: 5, // Add elevation for shadow effect
       flexShrink: 1,
       marginBottom: 16,
+      borderColor: theme.colors.outline,
+      borderWidth: 2,
     },
     graphContainer: {
       backgroundColor: theme.colors.surfaceVariant,

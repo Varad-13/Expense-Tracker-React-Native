@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { TextInput, Button, Text, useTheme } from 'react-native-paper';
+import { TextInput, Button, Text, useTheme, Appbar, IconButton } from 'react-native-paper';
 import { saveApiConfig } from '../../api/ApiConfig';
 import { useNavigate } from 'react-router-native';
 
@@ -14,8 +14,7 @@ const AddApi = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
-      justifyContent: 'center',
+      backgroundColor: theme.colors.surface,
     },
     input: {
       marginBottom: 10,
@@ -47,6 +46,10 @@ const AddApi = () => {
 
   return (
     <View style={styles.container}>
+     <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigate("/index")}/>
+        <Appbar.Content title="Work-in-Progress" />
+      </Appbar.Header>
       <Text style={styles.title}>Connection to backend server failed! Please setup API routes and API key</Text>
       <TextInput
         label="API Key"

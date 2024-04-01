@@ -175,7 +175,6 @@ const Dashboard = () => {
       alignSelf: 'center',
       borderColor: theme.colors.outline,
       borderWidth: 2,
-      
     },
     expenseItem: {
       flexDirection: 'row',
@@ -187,6 +186,13 @@ const Dashboard = () => {
       fontSize: 16,
       color: theme.colors.onSurfaceVariant,
     },
+    editButton: {
+      position: 'absolute',
+      top: 4,
+      right: 4,
+      color: theme.colors.onSurfaceVariant,
+      elevation: 4,
+    },  
   });
 
   const chartConfig = {
@@ -218,8 +224,6 @@ const Dashboard = () => {
         <View style={styles.container}>
           <Appbar.Header style={styles.appBar}>
             <Appbar.Content title="Home" /> 
-            <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
-            <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
           </Appbar.Header>
           <ActivityIndicator animating={true} size={200} style={{marginTop:40}}/>
         </View>
@@ -229,8 +233,6 @@ const Dashboard = () => {
       <View style={styles.container}>
         <Appbar.Header style={styles.appBar}>
           <Appbar.Content title="Home" /> 
-          <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
-          <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
         </Appbar.Header>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
@@ -239,6 +241,14 @@ const Dashboard = () => {
               <View style={styles.cardContainer}>
                 {cardsData.map((item) => (
                   <Card key={item.cardNumber} style={styles.atmCard}>
+                    <IconButton
+                      icon="pencil"
+                      size={24}
+                      onPress={() => {
+                        // Handle edit action here
+                      }}
+                      style={styles.editButton}
+                    />
                     <Text style={styles.cardText}>{item.holderName}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                     <Text style={styles.cardNumber}>{item.cardNumber}</Text>
