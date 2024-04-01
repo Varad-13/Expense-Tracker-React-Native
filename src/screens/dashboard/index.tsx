@@ -13,14 +13,31 @@ import {IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 're
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
+import { getAuthData, getLimits, getCards } from '../../api/Api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
-
+  const [cardsData, setCardsData] = useState([{
+    "nickname": "My Card",
+    "holderName": "John Doe",
+    "cardType": "Debit",
+    "cardProvider": "Visa",
+    "bankName": "XYZ Bank",
+    "validity": "12/25",
+    "cardNumber": "1234567890123456",
+    "CVV": "123",
+    "limits": 800000
+  }]); 
+  const [limitData, setLimitData] = useState([{
+    "card": "My Card",
+    "total_spent": 10000.0,
+    "total_earnt": 10000.0,
+    "percent_used": 0.0
+  }]); 
 
   useEffect(() => {
     const checkApiConfigAndNavigate = async () => {
@@ -28,7 +45,6 @@ const Dashboard = () => {
         // Check API configuration
         // Replace this with your actual logic to check if the API configuration exists
         const apiConfigExists = await getApiConfig();
-        ; // Example: Assuming API config exists
 
         if (!apiConfigExists) {
           // Navigate to the AddAPI screen if API configuration doesn't exist
@@ -39,8 +55,46 @@ const Dashboard = () => {
       }
     };
 
+    const checkConnectivity = async() => {
+      try{
+        const apiConnectivity = await getAuthData();
+        if(!apiConnectivity){
+          navigate('/add-api');
+        }
+      } catch (error) {
+        console.error('Error checking API configuration:', error);
+      }
+    }
+
+    const cards = async() => {
+      try{
+        const response  = await getCards();
+        if (response && response.data) {
+          // Set the fetched cards data in state
+          setCardsData(response.data);
+        }
+      } catch (error) {
+        console.error('Error checking API configuration:', error);
+      }
+    }
+
+    const limits = async() => {
+      try{
+        const response  = await getLimits();
+        if (response && response.data) {
+          // Set the fetched cards data in state
+          setLimitData(response.data);
+        }
+      } catch (error) {
+        console.error('Error checking API configuration:', error);
+      }
+    }
+
     // Call the function to check API config and navigate
     checkApiConfigAndNavigate();
+    checkConnectivity();
+    cards();
+    limits();
   }, []);
 
   const styles = StyleSheet.create({
@@ -147,18 +201,11 @@ const Dashboard = () => {
     },
   };
 
-  const data = [
-    { id: '1', accountHolder: 'Savings', validThru: '12/28', cardNumber: '**** **** **** 1234', cardType: 'VISA' },
-    { id: '2', accountHolder: 'Salary', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
-    { id: '3', accountHolder: 'Joint', validThru: '14/26', cardNumber: '**** **** **** 5678', cardType: 'Mastercard' },
-    // Add more card data as needed
-  ];
-  
   // Extract accountHolder values from the data array
-  const labels = data.map(item => item.accountHolder);
+  const labels = limitData.map(item => item.card);
   
   // Hardcode data values as 0.6
-  const dataValues = Array(labels.length).fill(0.6);
+  const dataValues = limitData.map(item => item.percent_used);
   
   // Create chartData object using extracted labels and hardcoded data values
   const chartData = {
@@ -187,13 +234,12 @@ const Dashboard = () => {
         <View>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.cardContainer}>
-            {data.map((item) => (
-              <Card key={item.id} style={styles.atmCard}>
-                <Text style={styles.cardText}>{item.accountHolder}</Text>
-                <Text style={styles.cardText}>Valid Thru: {item.validThru}</Text>
+            {cardsData.map((item) => (
+              <Card key={item.cardNumber} style={styles.atmCard}>
+                <Text style={styles.cardText}>{item.holderName}</Text>
+                <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                 <Text style={styles.cardNumber}>{item.cardNumber}</Text>
-                <Text style={styles.cardText}>Card Type: {item.cardType}</Text>
-
+                <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
                 <View style={styles.buttonContainer}>
                   <Button
                     mode="contained"
@@ -204,7 +250,7 @@ const Dashboard = () => {
                   </Button>
                   <Button
                     mode="contained"
-                    onPress={() => console.log(item.id)}
+                    onPress={() => console.log(item.cardNumber)}
                     style={styles.addButton}
                   >
                     Edit limits

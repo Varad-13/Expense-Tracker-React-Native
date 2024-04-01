@@ -47,7 +47,7 @@ const AddApi = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Please setup API routes and API key</Text>
+      <Text style={styles.title}>Connection to backend server failed! Please setup API routes and API key</Text>
       <TextInput
         label="API Key"
         value={apiKey}
