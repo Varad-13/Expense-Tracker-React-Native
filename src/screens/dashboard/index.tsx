@@ -57,12 +57,12 @@ const Dashboard = () => {
       paddingHorizontal: 16,
       marginBottom: 10,
       alignSelf: 'center',
+      columnGap: 8,
     },
     atmCard: {
       backgroundColor: theme.colors.background,
       borderRadius: 8,
       padding: 16,
-      marginRight: 16,
       marginTop: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
@@ -122,7 +122,7 @@ const Dashboard = () => {
       alignSelf: 'center',
       borderColor: theme.colors.outline,
       borderWidth: 2,
-      marginRight: 8,
+      
     },
     expenseItem: {
       flexDirection: 'row',
@@ -238,28 +238,28 @@ const Dashboard = () => {
               
             </View>
           </View>
-
-          <View style={styles.cardContainer}>
-          <View style={styles.expensesContainer}>
-              <Text style={styles.cardNumber}>Recent Incomings</Text>
-              {expenses.map((expense) => (
-                <View key={expense.id} style={styles.expenseItem}>
-                  <Text style={styles.expenseText}>{expense.category}</Text>
-                  <Text style={styles.expenseText}>{expense.amount}</Text>
-                </View>
-              ))}
-          </View>
-          <View style={styles.expensesContainer}>
-              <Text style={styles.cardNumber}>Recent Outgoings</Text>
-              {expenses.map((expense) => (
-                <View key={expense.id} style={styles.expenseItem}>
-                  <Text style={styles.expenseText}>{expense.category}</Text>
-                  <Text style={styles.expenseText}>{expense.amount}</Text>
-                </View>
-              ))}
-          </View>
+        
           
-        </View>
+          <View style={styles.cardContainer}>
+              <View style={styles.expensesContainer}>
+                  <Text style={styles.cardNumber}>Recent Incomings</Text>
+                  {expenses.map((expense) => (
+                    <View key={expense.id} style={styles.expenseItem}>
+                      <Text style={styles.expenseText}>{expense.category}</Text>
+                      <Text style={styles.expenseText}>{expense.amount}</Text>
+                    </View>
+                  ))}
+              </View>
+              <View style={styles.expensesContainer}>
+                  <Text style={styles.cardNumber}>Recent Outgoings</Text>
+                  {expenses.map((expense) => (
+                    <View key={expense.id} style={styles.expenseItem}>
+                      <Text style={styles.expenseText}>{expense.category}</Text>
+                      <Text style={styles.expenseText}>{expense.amount}</Text>
+                    </View>
+                  ))}
+              </View>
+            </View>
       </ScrollView>
     </View>
   );
