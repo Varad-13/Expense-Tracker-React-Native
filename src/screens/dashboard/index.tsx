@@ -1,4 +1,4 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import {Appearance, View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator } from 'react-native';
 
 import {
   LineChart,
@@ -15,29 +15,18 @@ import {useNavigate} from 'react-router-native';
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
 import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
-import { getAuthData, getLimits, getCards } from '../../api/Api';
+import { getAuthData, getLimits, getCards, getIncoming, getOutgoing } from '../../api/Api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
-  const [cardsData, setCardsData] = useState([{
-    "nickname": "My Card",
-    "holderName": "John Doe",
-    "cardType": "Debit",
-    "cardProvider": "Visa",
-    "bankName": "XYZ Bank",
-    "validity": "12/25",
-    "cardNumber": "1234567890123456",
-    "CVV": "123",
-    "limits": 800000
-  }]); 
-  const [limitData, setLimitData] = useState([{
-    "card": "My Card",
-    "total_spent": 10000.0,
-    "total_earnt": 10000.0,
-    "percent_used": 0.0
-  }]); 
+  const [cardsData, setCardsData] = useState(null); 
+  const [limitData, setLimitData] = useState(null); 
+  const [incomingTransactions, setIncomingTransactions] = useState(null); 
+  const [outgoingTransactions, setOutgoingTransactions] = useState(null); 
+  const [totalLimits, setTotalLimits] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkApiConfigAndNavigate = async () => {
@@ -65,36 +54,41 @@ const Dashboard = () => {
         console.error('Error checking API configuration:', error);
       }
     }
+    
+    const fetchData = async () => {
+      try {
+        const cardsResponse = await getCards();
+        const limitsResponse = await getLimits();
+        const incomingResponse = await getIncoming();
+        const outgoingResponse = await getOutgoing();
 
-    const cards = async() => {
-      try{
-        const response  = await getCards();
-        if (response && response.data) {
-          // Set the fetched cards data in state
-          setCardsData(response.data);
+        if (cardsResponse && cardsResponse.data) {
+          setCardsData(cardsResponse.data);
         }
-      } catch (error) {
-        console.error('Error checking API configuration:', error);
-      }
-    }
 
-    const limits = async() => {
-      try{
-        const response  = await getLimits();
-        if (response && response.data) {
-          // Set the fetched cards data in state
-          setLimitData(response.data);
+        if (limitsResponse && limitsResponse.data) {
+          setLimitData(limitsResponse.data);
         }
+
+        if (incomingResponse && incomingResponse.data) {
+          setIncomingTransactions(incomingResponse.data)
+        }
+
+        if (outgoingResponse && outgoingResponse.data) {
+          setOutgoingTransactions(outgoingResponse.data)
+        }
+        
+        setLoading(false);
       } catch (error) {
-        console.error('Error checking API configuration:', error);
+        console.error('Error fetching data:', error);
+        setLoading(false);
       }
     }
 
     // Call the function to check API config and navigate
     checkApiConfigAndNavigate();
     checkConnectivity();
-    cards();
-    limits();
+    fetchData();
   }, []);
 
   const styles = StyleSheet.create({
@@ -202,113 +196,111 @@ const Dashboard = () => {
   };
 
   // Extract accountHolder values from the data array
-  const labels = limitData.map(item => item.card);
-  
-  // Hardcode data values as 0.6
-  const dataValues = limitData.map(item => item.percent_used);
-  
-  // Create chartData object using extracted labels and hardcoded data values
+  const labels = limitData ? limitData.map(item => item.card) : [];
+    
+  // Hardcode data values as 0.6 if limitData is not null, otherwise set to an empty array
+  const dataValues = limitData ? limitData.map(item => item.fractional_percent) : [];
+    
+  // Create chartData object using extracted labels and data values
   const chartData = {
     labels: labels,
     data: dataValues
-  };
+  };  
 
-  const expenses = [
-    { id: '1', category: 'Groceries', amount: '$50' },
-    { id: '2', category: 'Gas', amount: '$30' },
-    { id: '3', category: 'Dining Out', amount: '$80' },
-    // Add more expenses as needed
-  ];
+  const renderContent = () => {
+    while(loading){
+      return <ActivityIndicator size="large"/>;
+    }
+    return (    
+      <View style={styles.container}>
+        <Appbar.Header style={styles.appBar}>
+          <Appbar.Content title="Home" /> 
+          <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
+          <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
+        </Appbar.Header>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {cardsData && cardsData.length > 0 ? (
+              <View style={styles.cardContainer}>
+                {cardsData.map((item) => (
+                  <Card key={item.cardNumber} style={styles.atmCard}>
+                    <Text style={styles.cardText}>{item.holderName}</Text>
+                    <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
+                    <Text style={styles.cardNumber}>{item.cardNumber}</Text>
+                    <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
+                    <View style={styles.buttonContainer}>
+                      <Button
+                        mode="contained"
+                        onPress={() => navigate('/wip')}
+                        style={styles.addButton}
+                      >
+                        Add expense
+                      </Button>
+                      <Button
+                        mode="contained"
+                        onPress={() => console.log(item.cardNumber)}
+                        style={styles.addButton}
+                      >
+                        Edit limits
+                      </Button>
+                    </View>
+                  </Card>
+                ))}
+              </View>
+            ) : null}
+          </ScrollView>            
+          </View>
+  
+          
+          <View style={styles.cardContainer}>
+              <View style={{alignSelf: 'center'}}>
+                <View style={styles.graphContainer}>
+                  <Text style={styles.cardNumber}>Monthly Limits</Text>
+                  <ProgressChart
+                    data={chartData}
+                    width={screenWidth-48}
+                    height={220}
+                    strokeWidth={16}
+                    radius={32}
+                    chartConfig={chartConfig}
+                    hideLegend={false}
+                    style={styles.cardNumber}
+                    />
+                    <Text style={styles.graphText}>Limits: ₹1200/1800</Text>
+                </View>
+                
+              </View>
+            </View>
+          
+            
+            <View style={styles.cardContainer}>
+                <View style={styles.expensesContainer}>
+                    <Text style={styles.cardNumber}>Recent Incomings</Text>
+                    {incomingTransactions.map((expense) => (
+                      <View key={expense.id} style={styles.expenseItem}>
+                        <Text style={styles.expenseText}>{expense.category}</Text>
+                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
+                      </View>
+                    ))}
+                </View>
+                <View style={styles.expensesContainer}>
+                    <Text style={styles.cardNumber}>Recent Outgoings</Text>
+                    {outgoingTransactions.map((expense) => (
+                      <View key={expense.id} style={styles.expenseItem}>
+                        <Text style={styles.expenseText}>{expense.category}</Text>
+                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
+                      </View>
+                    ))}
+                </View>
+              </View>
+        </ScrollView>
+      </View>
+    );
+  }
+  return(renderContent());
 
   
-
-
-  return (
-    <View style={styles.container}>
-      <Appbar.Header style={styles.appBar}>
-        <Appbar.Content title="Home" /> 
-        <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
-        <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
-      </Appbar.Header>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.cardContainer}>
-            {cardsData.map((item) => (
-              <Card key={item.cardNumber} style={styles.atmCard}>
-                <Text style={styles.cardText}>{item.holderName}</Text>
-                <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
-                <Text style={styles.cardNumber}>{item.cardNumber}</Text>
-                <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
-                <View style={styles.buttonContainer}>
-                  <Button
-                    mode="contained"
-                    onPress={() => navigate('/wip')}
-                    style={styles.addButton}
-                  >
-                    Add expense
-                  </Button>
-                  <Button
-                    mode="contained"
-                    onPress={() => console.log(item.cardNumber)}
-                    style={styles.addButton}
-                  >
-                    Edit limits
-                  </Button>
-                </View>
-              </Card>
-            ))}
-          </View>
-          </ScrollView>
-          
-          
-        </View>
-
-        
-        <View style={styles.cardContainer}>
-            <View style={{alignSelf: 'center'}}>
-              <View style={styles.graphContainer}>
-                <Text style={styles.cardNumber}>Monthly Limits</Text>
-                <ProgressChart
-                  data={chartData}
-                  width={screenWidth-48}
-                  height={220}
-                  strokeWidth={16}
-                  radius={32}
-                  chartConfig={chartConfig}
-                  hideLegend={false}
-                  style={styles.cardNumber}
-                  />
-                  <Text style={styles.graphText}>Limits: $1200/1800</Text>
-              </View>
-              
-            </View>
-          </View>
-        
-          
-          <View style={styles.cardContainer}>
-              <View style={styles.expensesContainer}>
-                  <Text style={styles.cardNumber}>Recent Incomings</Text>
-                  {expenses.map((expense) => (
-                    <View key={expense.id} style={styles.expenseItem}>
-                      <Text style={styles.expenseText}>{expense.category}</Text>
-                      <Text style={styles.expenseText}>{expense.amount}</Text>
-                    </View>
-                  ))}
-              </View>
-              <View style={styles.expensesContainer}>
-                  <Text style={styles.cardNumber}>Recent Outgoings</Text>
-                  {expenses.map((expense) => (
-                    <View key={expense.id} style={styles.expenseItem}>
-                      <Text style={styles.expenseText}>{expense.category}</Text>
-                      <Text style={styles.expenseText}>{expense.amount}</Text>
-                    </View>
-                  ))}
-              </View>
-            </View>
-      </ScrollView>
-    </View>
-  );
 };
   
 export default withTheme(Dashboard) ;
