@@ -7,7 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 const getAndroidId = () => {
   const androidId = DeviceInfo.getUniqueId();
   if(androidId._j){
-    return "1029239";
+    return androidId._j;
   } else{
     return "1029239";
   }
@@ -40,6 +40,7 @@ export const getAuthData = async (): Promise<AxiosResponse | null> => {
     };
     // Make the API call
     const response = await axios(config);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error making GET request:', error);
@@ -167,6 +168,39 @@ export const getOutgoing = async (): Promise<AxiosResponse | null> => {
     const config: AxiosRequestConfig = {
       method: 'GET',
       url: `${apiConfig.apiUrl}/get-transaction-debit/`,
+      headers,
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    return response;
+  } catch (error) {
+    console.error('Error making GET request:', error);
+    return null;
+  }
+};
+
+export const getTotalLimits = async (): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      url: `${apiConfig.apiUrl}/get-total-limit/`,
       headers,
       timeout: 5000,
     };

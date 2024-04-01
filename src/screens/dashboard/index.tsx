@@ -1,4 +1,4 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import {Appearance, View, Text, StyleSheet, Pressable, ScrollView,  } from 'react-native';
 
 import {
   LineChart,
@@ -9,13 +9,13 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 
-import {IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 'react-native-paper';
+import {ActivityIndicator, IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 'react-native-paper';
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
 import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
-import { getAuthData, getLimits, getCards, getIncoming, getOutgoing } from '../../api/Api';
+import { getAuthData, getLimits, getCards, getIncoming, getOutgoing, getTotalLimits } from '../../api/Api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ const Dashboard = () => {
   const [limitData, setLimitData] = useState(null); 
   const [incomingTransactions, setIncomingTransactions] = useState(null); 
   const [outgoingTransactions, setOutgoingTransactions] = useState(null); 
-  const [totalLimits, setTotalLimits] = useState(null); 
+  const [totalLimits, setTotalLimits] = useState({"expense":"0","limit":"0","percentage":"0"}); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -61,6 +61,7 @@ const Dashboard = () => {
         const limitsResponse = await getLimits();
         const incomingResponse = await getIncoming();
         const outgoingResponse = await getOutgoing();
+        const totalLimitResponse = await getTotalLimits();
 
         if (cardsResponse && cardsResponse.data) {
           setCardsData(cardsResponse.data);
@@ -78,6 +79,10 @@ const Dashboard = () => {
           setOutgoingTransactions(outgoingResponse.data)
         }
         
+        if (totalLimitResponse && totalLimitResponse.data) {
+          setTotalLimits(totalLimitResponse.data)
+        }
+
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -209,7 +214,16 @@ const Dashboard = () => {
 
   const renderContent = () => {
     while(loading){
-      return <ActivityIndicator size="large"/>;
+      return(
+        <View style={styles.container}>
+          <Appbar.Header style={styles.appBar}>
+            <Appbar.Content title="Home" /> 
+            <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
+            <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
+          </Appbar.Header>
+          <ActivityIndicator animating={true} size={200} style={{marginTop:40}}/>
+        </View>
+      ) 
     }
     return (    
       <View style={styles.container}>
@@ -247,8 +261,31 @@ const Dashboard = () => {
                     </View>
                   </Card>
                 ))}
+                <Card style={styles.atmCard}>
+                  <View style={{flex:1}}>
+                    <IconButton
+                      icon="plus"
+                      size={140}
+                      onPress={() => navigate('/wip')}
+                      style={{alignSelf:"center"}}
+                    />
+                  </View>
+                </Card>
               </View>
-            ) : null}
+            ) : 
+            <View style={styles.cardContainer}>
+              <Card style={styles.atmCard}>
+              <View style={{flex:1}}>
+                <IconButton
+                  icon="plus"
+                  size={140}
+                  onPress={() => navigate('/wip')}
+                  style={{alignSelf:"center"}}
+                />
+              </View>
+            </Card>
+            </View>
+            }
           </ScrollView>            
           </View>
   
@@ -267,7 +304,8 @@ const Dashboard = () => {
                     hideLegend={false}
                     style={styles.cardNumber}
                     />
-                    <Text style={styles.graphText}>Limits: ₹1200/1800</Text>
+                    <Text style={styles.graphText}>Limits: ₹{totalLimits.expense}/{totalLimits.limit}</Text>
+                    <Text style={styles.graphText}>Total Usage: {totalLimits.percentage}%</Text>
                 </View>
                 
               </View>
