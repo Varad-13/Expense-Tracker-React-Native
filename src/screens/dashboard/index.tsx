@@ -13,11 +13,35 @@ import {IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 're
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
+import { useEffect } from 'react';
+import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
+
+
+  useEffect(() => {
+    const checkApiConfigAndNavigate = async () => {
+      try {
+        // Check API configuration
+        // Replace this with your actual logic to check if the API configuration exists
+        const apiConfigExists = await getApiConfig();
+        ; // Example: Assuming API config exists
+
+        if (!apiConfigExists) {
+          // Navigate to the AddAPI screen if API configuration doesn't exist
+          navigate('/add-api');
+        }
+      } catch (error) {
+        console.error('Error checking API configuration:', error);
+      }
+    };
+
+    // Call the function to check API config and navigate
+    checkApiConfigAndNavigate();
+  }, []);
 
   const styles = StyleSheet.create({
     appBar: {
@@ -30,14 +54,16 @@ const Dashboard = () => {
     },
     cardContainer: {
       flexDirection: 'row',
-      padding: 16,
-      alignSelf: 'center'
+      paddingHorizontal: 16,
+      marginBottom: 10,
+      alignSelf: 'center',
     },
     atmCard: {
       backgroundColor: theme.colors.background,
       borderRadius: 8,
       padding: 16,
       marginRight: 16,
+      marginTop: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
       alignSelf: 'center',
@@ -46,7 +72,6 @@ const Dashboard = () => {
     },
     graphContainer: {
       backgroundColor: theme.colors.tertiaryContainer,
-      marginBottom: 8,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
@@ -97,6 +122,7 @@ const Dashboard = () => {
       alignSelf: 'center',
       borderColor: theme.colors.outline,
       borderWidth: 2,
+      marginRight: 8,
     },
     expenseItem: {
       flexDirection: 'row',
@@ -116,7 +142,7 @@ const Dashboard = () => {
     color: (opacity = 1) => {
       const colorOnSurface = Appearance.getColorScheme() === 'dark'
       ? `rgba(255, 220, 255, ${opacity})` 
-      : `rgba(100, 40, 70, ${opacity})`; 
+      : `rgba(70, 10, 50, ${opacity})`; 
       return colorOnSurface
     },
   };
@@ -141,11 +167,13 @@ const Dashboard = () => {
   };
 
   const expenses = [
-    { id: '1', title: 'Groceries', amount: '$50' },
-    { id: '2', title: 'Gas', amount: '$30' },
-    { id: '3', title: 'Dining Out', amount: '$80' },
+    { id: '1', category: 'Groceries', amount: '$50' },
+    { id: '2', category: 'Gas', amount: '$30' },
+    { id: '3', category: 'Dining Out', amount: '$80' },
     // Add more expenses as needed
   ];
+
+  
 
 
   return (
@@ -187,35 +215,50 @@ const Dashboard = () => {
           </View>
           </ScrollView>
           
-          <View style={{alignSelf: 'center'}}>
-            <View style={styles.graphContainer}>
-              <Text style={styles.cardNumber}>Monthly Limits</Text>
-              <ProgressChart
-                data={chartData}
-                width={screenWidth-48}
-                height={220}
-                strokeWidth={16}
-                radius={32}
-                chartConfig={chartConfig}
-                hideLegend={false}
-                style={styles.cardNumber}
-                />
-                <Text style={styles.graphText}>Limits: $1200/1800</Text>
-            </View>
-            
-          </View>
+          
         </View>
 
+        
         <View style={styles.cardContainer}>
+            <View style={{alignSelf: 'center'}}>
+              <View style={styles.graphContainer}>
+                <Text style={styles.cardNumber}>Monthly Limits</Text>
+                <ProgressChart
+                  data={chartData}
+                  width={screenWidth-48}
+                  height={220}
+                  strokeWidth={16}
+                  radius={32}
+                  chartConfig={chartConfig}
+                  hideLegend={false}
+                  style={styles.cardNumber}
+                  />
+                  <Text style={styles.graphText}>Limits: $1200/1800</Text>
+              </View>
+              
+            </View>
+          </View>
+
+          <View style={styles.cardContainer}>
           <View style={styles.expensesContainer}>
-              <Text style={styles.cardNumber}>Recent Transactions</Text>
+              <Text style={styles.cardNumber}>Recent Incomings</Text>
               {expenses.map((expense) => (
                 <View key={expense.id} style={styles.expenseItem}>
-                  <Text style={styles.expenseText}>{expense.title}</Text>
+                  <Text style={styles.expenseText}>{expense.category}</Text>
                   <Text style={styles.expenseText}>{expense.amount}</Text>
                 </View>
               ))}
           </View>
+          <View style={styles.expensesContainer}>
+              <Text style={styles.cardNumber}>Recent Outgoings</Text>
+              {expenses.map((expense) => (
+                <View key={expense.id} style={styles.expenseItem}>
+                  <Text style={styles.expenseText}>{expense.category}</Text>
+                  <Text style={styles.expenseText}>{expense.amount}</Text>
+                </View>
+              ))}
+          </View>
+          
         </View>
       </ScrollView>
     </View>

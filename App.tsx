@@ -9,10 +9,11 @@ import {
 } from 'react-native-paper';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import {NativeRouter, Route, Routes} from 'react-router-native';
+import {NativeRouter, Route, Routes, useNavigate} from 'react-router-native';
 import Dashboard from './src/screens/dashboard';
 import ExpensesList from './src/screens/expenses';
 import WipScreen from './src/screens/wip';
+import AddAPI from './src/screens/add-api';
 
 
 interface NavRoutes {
@@ -23,7 +24,6 @@ interface NavRoutes {
 
 function App(): JSX.Element {
   const [index, setIndex] = useState(0);
-  const [db, setDb] = useState<SQLiteDatabase | null>(null);
   const [routes] = useState<NavRoutes[]>([
     {key: 'dashboard', title: 'Home', unfocusedIcon:'home-outline', focusedIcon: 'home'},
     {key: 'calendar', title: 'Accounts', unfocusedIcon: 'credit-card-chip-outline', focusedIcon: 'credit-card'},
@@ -71,9 +71,9 @@ function App(): JSX.Element {
               }
             />
             <Route
-              path="/wip"
+              path="/add-api"
               element={ 
-                <WipScreen/>
+                <AddAPI/>
               }
             />
             <Route
