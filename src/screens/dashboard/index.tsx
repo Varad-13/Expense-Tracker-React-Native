@@ -154,7 +154,6 @@ const Dashboard = () => {
         <Appbar.Content title="Home" /> 
         <IconButton icon="bank-plus" onPress={() => navigate('/wip')}   />
         <Appbar.Action icon="bell-outline" onPress={() => navigate('/wip')} style={styles.icon} />
-        <Appbar.Action icon="account-outline" onPress={() => navigate('/wip')} style={styles.icon} />
       </Appbar.Header>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
@@ -170,7 +169,7 @@ const Dashboard = () => {
                 <View style={styles.buttonContainer}>
                   <Button
                     mode="contained"
-                    onPress={() => console.log(item.id)}
+                    onPress={() => navigate('/wip')}
                     style={styles.addButton}
                   >
                     Add expense
