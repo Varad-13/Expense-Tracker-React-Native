@@ -14,7 +14,9 @@ import Dashboard from './src/screens/dashboard';
 import ExpensesList from './src/screens/expenses';
 import WipScreen from './src/screens/wip';
 import AddAPI from './src/screens/add-api';
-
+import AddCard from './src/screens/add-card';
+import AddCreditScreen from './src/screens/add-credit';
+import AddDebitScreen from './src/screens/add-debit';
 
 interface NavRoutes {
   key: string;
@@ -74,6 +76,24 @@ function App(): JSX.Element {
               path="/add-api"
               element={ 
                 <AddAPI/>
+              }
+            />
+            <Route
+              path="/add-card"
+              element={ 
+                <AddCard/>
+              }
+            />
+            <Route
+              path="/add-credit/:cardNumber"
+              element={ 
+                <AddCreditScreen/>
+              }
+            />
+            <Route
+              path="/add-debit/:cardNumber"
+              element={ 
+                <AddDebitScreen/>
               }
             />
             <Route

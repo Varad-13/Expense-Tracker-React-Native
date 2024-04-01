@@ -9,7 +9,7 @@ const getAndroidId = () => {
   if(androidId._j){
     return androidId._j;
   } else{
-    return "1029239";
+    return "7715cc2590cde8ba";
   }
 };
 
@@ -106,6 +106,7 @@ export const getCards = async (): Promise<AxiosResponse | null> => {
       timeout: 5000,
     };
     // Make the API call
+    
     const response = await axios(config);
     return response;
   } catch (error) {
@@ -209,6 +210,97 @@ export const getTotalLimits = async (): Promise<AxiosResponse | null> => {
     return response;
   } catch (error) {
     console.error('Error making GET request:', error);
+    return null;
+  }
+};
+
+export const postAddCard = async (data: any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    // Set up the request body with the provided data
+    const body = {
+      nickname: data.nickname,
+      holder_name: data.holder_name,
+      card_type: data.card_type,
+      card_provider: data.card_provider,
+      bank_name: data.bank_name,
+      validity: data.validity,
+      card_number: data.card_number,
+      cvv: data.cvv,
+      limits: data.limits,
+    };
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: `${apiConfig.apiUrl}/add-card/`,
+      headers,
+      data: body, // Include the data in the request config
+      timeout: 5000,
+    };
+
+    // Make the API call
+    const response = await axios(config);
+    return response;
+  } catch (error) {
+    console.error('Error making POST request:', error);
+    return null;
+  }
+};
+
+export const postAddTransaction = async (data: any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    // Set up the request body with the provided data
+    const body = {
+      card_number: data.card_number,
+      credit_debit: data.credit_debit,
+      amount: parseInt(data.amount),
+      category: data.category,
+    };
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: `${apiConfig.apiUrl}/add-transaction/`,
+      headers,
+      data: body, // Include the data in the request config
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    
+    return response;
+  } catch (error) {
+    console.error('Error making POST request:', error);
     return null;
   }
 };

@@ -13,11 +13,34 @@ import {IconButton, Avatar, Button, Appbar, Card, withTheme, useTheme } from 're
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
+import { useEffect, useState } from 'react';
+import { getOutgoing } from '../../api/Api';
 
 const ExpenseList = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
+  const [expenses, addExpenses] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {    
+    const fetchData = async () => {
+      try {
+        const expensesResponse = await getOutgoing();
+        if(expensesResponse && expensesResponse.data){
+          addExpenses(expensesResponse.data)
+          console.log(expensesResponse.data)
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      }
+    }
+
+    fetchData()
+  }, []);
 
   const styles = StyleSheet.create({
     appBar: {
@@ -112,67 +135,50 @@ const ExpenseList = () => {
     },
   });
 
-  
-  const expenses = [
-    { id: '1', title: 'Groceries', amount: '$50' },
-    { id: '2', title: 'Gas', amount: '$30' },
-    { id: '3', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    { id: '4', title: 'Dining Out', amount: '$80' },
-    // Add more expenses as needed
-  ];
-
-
-  return (
-    <View style={styles.container}>
-      <Appbar.Header style={styles.appBar}>
-        <Appbar.Content title="Expenses" />
-        <IconButton icon="bank-plus" onPress={() => navigate("/wip")}   />
-        <Appbar.Action icon="bell-outline" onPress={() => navigate("/wip")} style={styles.icon} />
-        <Appbar.Action icon="account-outline" onPress={() => navigate("/wip")} style={styles.icon} />
-      </Appbar.Header>
-      <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-            <View style={styles.cardContainer}>
-              {expenses.map((expense) => (
-                <View style={styles.atmCard}>
-                    <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.title}</Text>
-                        <Text style={styles.expenseText}>{expense.amount}</Text>
+  const renderContent = () => {
+    if(loading){
+      console.log(loading)
+    }
+    return (
+      <View style={styles.container}>
+        <Appbar.Header style={styles.appBar}>
+          <Appbar.Content title="Expenses" />
+        </Appbar.Header>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            <View>
+              {expenses && expenses.length > 0 ? (
+                <View style={styles.cardContainer}>
+                  {expenses.map((expense) => (
+                    <View style={styles.atmCard}>
+                        <View key={expense.id} style={styles.expenseItem}>
+                            <Text style={styles.expenseText}>{expense.category}</Text>
+                            <Text style={styles.expenseText}>{expense.amount}</Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <IconButton
+                                icon="delete"
+                                iconColor={theme.colors.error}
+                                size={20}
+                                onPress={() => console.log('Pressed')}
+                            />
+                            <IconButton
+                                icon="pencil"
+                                iconColor={theme.colors.secondary}
+                                size={20}
+                                onPress={() => console.log('Pressed')}
+                            />
+                        </View>
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <IconButton
-                            icon="delete"
-                            iconColor={theme.colors.error}
-                            size={20}
-                            onPress={() => console.log('Pressed')}
-                        />
-                        <IconButton
-                            icon="pencil"
-                            iconColor={theme.colors.secondary}
-                            size={20}
-                            onPress={() => console.log('Pressed')}
-                        />
-                    </View>
+                  ))}
                 </View>
-              ))}
+              ) : null}
           </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </ScrollView>
+      </View>
+    );
+  };
+
+  return(renderContent())
 };
   
 export default withTheme(ExpenseList) ;

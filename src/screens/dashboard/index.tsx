@@ -246,17 +246,17 @@ const Dashboard = () => {
                     <View style={styles.buttonContainer}>
                       <Button
                         mode="contained"
-                        onPress={() => navigate('/wip')}
+                        onPress={() => navigate(`/add-debit/${item.cardNumber}`)}
                         style={styles.addButton}
                       >
                         Add expense
                       </Button>
                       <Button
                         mode="contained"
-                        onPress={() => console.log(item.cardNumber)}
+                        onPress={() => navigate(`/add-credit/${item.cardNumber}`)}
                         style={styles.addButton}
                       >
-                        Edit limits
+                        Add repayment
                       </Button>
                     </View>
                   </Card>
@@ -266,7 +266,7 @@ const Dashboard = () => {
                     <IconButton
                       icon="plus"
                       size={140}
-                      onPress={() => navigate('/wip')}
+                      onPress={() => navigate('/add-card')}
                       style={{alignSelf:"center"}}
                     />
                   </View>
@@ -279,7 +279,7 @@ const Dashboard = () => {
                 <IconButton
                   icon="plus"
                   size={140}
-                  onPress={() => navigate('/wip')}
+                  onPress={() => navigate('/add-card')}
                   style={{alignSelf:"center"}}
                 />
               </View>
