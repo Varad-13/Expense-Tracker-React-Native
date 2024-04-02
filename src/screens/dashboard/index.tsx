@@ -15,7 +15,7 @@ import {useNavigate} from 'react-router-native';
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
 import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
-import { getAuthData, getLimits, getCards, getIncoming, getOutgoing, getTotalLimits } from '../../api/Api';
+import { getAuthData, getLimits, getCards, getIncoming, getOutgoing, getTotalLimits, getIncomingOutgoing } from '../../api/Api';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const Dashboard = () => {
   const screenWidth = Dimensions.get("window").width;
   const [cardsData, setCardsData] = useState(null); 
   const [limitData, setLimitData] = useState(null); 
+  const [incomeExpenses, setIncomgExpense] = useState(null); 
   const [totalLimits, setTotalLimits] = useState({"expense":"0","limit":"0","percentage":"0"}); 
   const [loading, setLoading] = useState(true);
 
@@ -58,6 +59,7 @@ const Dashboard = () => {
         const cardsResponse = await getCards();
         const limitsResponse = await getLimits();
         const totalLimitResponse = await getTotalLimits();
+        const incomeExpense = await getIncomingOutgoing();
 
         if (cardsResponse && cardsResponse.data) {
           setCardsData(cardsResponse.data);
@@ -67,10 +69,12 @@ const Dashboard = () => {
           setLimitData(limitsResponse.data);
         }
 
-        
-        
         if (totalLimitResponse && totalLimitResponse.data) {
           setTotalLimits(totalLimitResponse.data)
+        }
+
+        if (incomeExpense && incomeExpense.data) {
+          setIncomgExpense(incomeExpense.data)
         }
 
         setLoading(false);
@@ -359,11 +363,11 @@ const Dashboard = () => {
           <View style={styles.cardContainer}>
             <View style={styles.incomeContainer}>
                 <Text style={styles.expensesTitle}>Total Income</Text>
-                <Text style={styles.expensesTitle}>₹20000</Text>
+                <Text style={styles.expensesTitle}>₹{incomeExpenses.incoming}</Text>
             </View>
             <View style={styles.outgoingContainer}>
                 <Text style={styles.expensesTitle}>Total Expense</Text>
-                <Text style={styles.expensesTitle}>₹10000</Text>
+                <Text style={styles.expensesTitle}>₹{incomeExpenses.expense}</Text>
             </View>
           </View>
 
