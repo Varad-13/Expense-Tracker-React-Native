@@ -32,8 +32,8 @@ function App(): JSX.Element {
   const [routes] = useState<NavRoutes[]>([
     {key: 'dashboard', title: 'Home', unfocusedIcon:'home-outline', focusedIcon: 'home'},
     {key: 'calendar', title: 'Accounts', unfocusedIcon: 'credit-card-chip-outline', focusedIcon: 'credit-card'},
-    {key: 'analytics', title: 'Insights', focusedIcon: 'google-analytics'},
-    {key: 'expenses', title: 'Expenses', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
+    {key: 'analytics', title: 'Analytics', focusedIcon: 'google-analytics'},
+    {key: 'expenses', title: 'Transactions', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
   ]);
 
   const renderScene = Screens.SceneMap({

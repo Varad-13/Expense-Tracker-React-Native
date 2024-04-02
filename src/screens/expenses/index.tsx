@@ -30,6 +30,13 @@ const ExpenseList = () => {
         if(expensesResponse && expensesResponse.data){
           addExpenses(expensesResponse.data)
         }
+        if (incomingResponse && incomingResponse.data) {
+          setIncomingTransactions(incomingResponse.data)
+        }
+
+        if (outgoingResponse && outgoingResponse.data) {
+          setOutgoingTransactions(outgoingResponse.data)
+        }
 
         setLoading(false);
       } catch (error) {

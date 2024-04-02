@@ -9,7 +9,7 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 
-import {ActivityIndicator, IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 'react-native-paper';
+import {ActivityIndicator, IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme, MD3Colors } from 'react-native-paper';
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
@@ -23,8 +23,6 @@ const Dashboard = () => {
   const screenWidth = Dimensions.get("window").width;
   const [cardsData, setCardsData] = useState(null); 
   const [limitData, setLimitData] = useState(null); 
-  const [incomingTransactions, setIncomingTransactions] = useState(null); 
-  const [outgoingTransactions, setOutgoingTransactions] = useState(null); 
   const [totalLimits, setTotalLimits] = useState({"expense":"0","limit":"0","percentage":"0"}); 
   const [loading, setLoading] = useState(true);
 
@@ -59,8 +57,6 @@ const Dashboard = () => {
       try {
         const cardsResponse = await getCards();
         const limitsResponse = await getLimits();
-        const incomingResponse = await getIncoming();
-        const outgoingResponse = await getOutgoing();
         const totalLimitResponse = await getTotalLimits();
 
         if (cardsResponse && cardsResponse.data) {
@@ -71,13 +67,7 @@ const Dashboard = () => {
           setLimitData(limitsResponse.data);
         }
 
-        if (incomingResponse && incomingResponse.data) {
-          setIncomingTransactions(incomingResponse.data)
-        }
-
-        if (outgoingResponse && outgoingResponse.data) {
-          setOutgoingTransactions(outgoingResponse.data)
-        }
+        
         
         if (totalLimitResponse && totalLimitResponse.data) {
           setTotalLimits(totalLimitResponse.data)
@@ -129,6 +119,7 @@ const Dashboard = () => {
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
       flexShrink: 1,
+      flex:1,
       padding: 8,
       alignSelf: 'center',
       borderColor: theme.colors.outline,
@@ -180,6 +171,26 @@ const Dashboard = () => {
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5,
+      flexShrink: 1,
+      padding: 8,
+      alignSelf: 'center',
+      borderColor: theme.colors.outline,
+      borderWidth: 2,
+    },
+    incomeContainer: {
+      backgroundColor: "rgba(100,200,100,0.3)",
+      borderRadius: 8,
+      width: screenWidth-32,
+      flexShrink: 1,
+      padding: 8,
+      alignSelf: 'center',
+      borderColor: theme.colors.outline,
+      borderWidth: 2,
+    },
+    outgoingContainer: {
+      backgroundColor: "rgba(200,100,100,0.3)",
+      borderRadius: 8,
+      width: screenWidth-32,
       flexShrink: 1,
       padding: 8,
       alignSelf: 'center',
@@ -328,43 +339,36 @@ const Dashboard = () => {
             <View style={{alignSelf: 'center'}}>
               <View style={styles.graphContainer}>
                 <Text style={styles.expensesTitle}>Monthly Limits</Text>
-                  <ProgressChart
-                    data={chartData}
-                    width={screenWidth*0.85}
-                    height={220}
-                    strokeWidth={16}
-                    radius={32}
-                    chartConfig={chartConfig}
-                    style = {{flexShrink:1}}
-                    
-                    />
+                <ProgressChart
+                  data={chartData}
+                  width={screenWidth-80}
+                  height={150}
+                  strokeWidth={12}
+                  radius={32}
+                  chartConfig={chartConfig}
+                  style = {{flexShrink:1, alignSelf:"stretch"}}
+                />
+                <View style={{flex:1, flexDirection:"row", justifyContent:"space-between"}}>
                   <Text style={styles.graphText}>Limits: ₹{totalLimits.expense}/{totalLimits.limit}</Text>
                   <Text style={styles.graphText}>Total Usage: {totalLimits.percentage}%</Text>
+                </View>
               </View>
             </View>
           </View>
           
+          <View style={styles.cardContainer}>
+            <View style={styles.incomeContainer}>
+                <Text style={styles.expensesTitle}>Total Income</Text>
+                <Text style={styles.expensesTitle}>₹20000</Text>
+            </View>
+            <View style={styles.outgoingContainer}>
+                <Text style={styles.expensesTitle}>Total Expense</Text>
+                <Text style={styles.expensesTitle}>₹10000</Text>
+            </View>
+          </View>
+
+
             
-            <View style={styles.cardContainer}>
-                <View style={styles.expensesContainer}>
-                    <Text style={styles.expensesTitle}>Recent Incomings</Text>
-                    {incomingTransactions.slice(0, 3).map((expense) => (
-                      <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
-                      </View>
-                    ))}
-                </View>
-                <View style={styles.expensesContainer}>
-                    <Text style={styles.expensesTitle}>Recent Outgoings</Text>
-                    {outgoingTransactions.slice(0, 3).map((expense) => (
-                      <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
-                      </View>
-                    ))}
-                </View>
-              </View>
         </ScrollView>
       </View>
     );
