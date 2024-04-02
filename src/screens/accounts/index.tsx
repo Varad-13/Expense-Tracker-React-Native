@@ -17,15 +17,11 @@ import { useEffect, useState } from 'react';
 import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
 import { getAuthData, getLimits, getCards, getIncoming, getOutgoing, getTotalLimits } from '../../api/Api';
 
-const Dashboard = () => {
+const AccountsScreen = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
   const [cardsData, setCardsData] = useState(null); 
-  const [limitData, setLimitData] = useState(null); 
-  const [incomingTransactions, setIncomingTransactions] = useState(null); 
-  const [outgoingTransactions, setOutgoingTransactions] = useState(null); 
-  const [totalLimits, setTotalLimits] = useState({"expense":"0","limit":"0","percentage":"0"}); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,29 +54,9 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const cardsResponse = await getCards();
-        const limitsResponse = await getLimits();
-        const incomingResponse = await getIncoming();
-        const outgoingResponse = await getOutgoing();
-        const totalLimitResponse = await getTotalLimits();
 
         if (cardsResponse && cardsResponse.data) {
           setCardsData(cardsResponse.data);
-        }
-
-        if (limitsResponse && limitsResponse.data) {
-          setLimitData(limitsResponse.data);
-        }
-
-        if (incomingResponse && incomingResponse.data) {
-          setIncomingTransactions(incomingResponse.data)
-        }
-
-        if (outgoingResponse && outgoingResponse.data) {
-          setOutgoingTransactions(outgoingResponse.data)
-        }
-        
-        if (totalLimitResponse && totalLimitResponse.data) {
-          setTotalLimits(totalLimitResponse.data)
         }
 
         setLoading(false);
@@ -106,7 +82,7 @@ const Dashboard = () => {
       backgroundColor: theme.colors.surface,
     },
     cardContainer: {
-      flexDirection: 'row',
+      flexDirection: 'column',
       paddingHorizontal: 16,
       marginBottom: 10,
       alignSelf: 'center',
@@ -195,28 +171,6 @@ const Dashboard = () => {
     },  
   });
 
-  const chartConfig = {
-    backgroundGradientFrom: theme.colors.tertiaryContainer,
-    backgroundGradientTo: theme.colors.tertiaryContainer,
-    color: (opacity = 1) => {
-      const colorOnSurface = Appearance.getColorScheme() === 'dark'
-      ? `rgba(255, 220, 255, ${opacity})` 
-      : `rgba(70, 10, 50, ${opacity})`; 
-      return colorOnSurface
-    },
-  };
-
-  // Extract accountHolder values from the data array
-  const labels = limitData ? limitData.map(item => item.card) : [];
-    
-  // Hardcode data values as 0.6 if limitData is not null, otherwise set to an empty array
-  const dataValues = limitData ? limitData.map(item => item.fractional_percent) : [];
-    
-  // Create chartData object using extracted labels and data values
-  const chartData = {
-    labels: labels,
-    data: dataValues
-  };  
 
   const renderContent = () => {
     while(loading){
@@ -299,50 +253,6 @@ const Dashboard = () => {
             }
           </ScrollView>            
           </View>
-  
-          
-          <View style={styles.cardContainer}>
-              <View style={{alignSelf: 'center'}}>
-                <View style={styles.graphContainer}>
-                  <Text style={styles.cardNumber}>Monthly Limits</Text>
-                  <ProgressChart
-                    data={chartData}
-                    width={screenWidth-48}
-                    height={220}
-                    strokeWidth={16}
-                    radius={32}
-                    chartConfig={chartConfig}
-                    hideLegend={false}
-                    style={styles.cardNumber}
-                    />
-                    <Text style={styles.graphText}>Limits: ₹{totalLimits.expense}/{totalLimits.limit}</Text>
-                    <Text style={styles.graphText}>Total Usage: {totalLimits.percentage}%</Text>
-                </View>
-                
-              </View>
-            </View>
-          
-            
-            <View style={styles.cardContainer}>
-                <View style={styles.expensesContainer}>
-                    <Text style={styles.cardNumber}>Recent Incomings</Text>
-                    {incomingTransactions.map((expense) => (
-                      <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
-                      </View>
-                    ))}
-                </View>
-                <View style={styles.expensesContainer}>
-                    <Text style={styles.cardNumber}>Recent Outgoings</Text>
-                    {outgoingTransactions.map((expense) => (
-                      <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
-                      </View>
-                    ))}
-                </View>
-              </View>
         </ScrollView>
       </View>
     );
@@ -352,4 +262,4 @@ const Dashboard = () => {
   
 };
   
-export default withTheme(Dashboard) ;
+export default withTheme(AccountsScreen) ;

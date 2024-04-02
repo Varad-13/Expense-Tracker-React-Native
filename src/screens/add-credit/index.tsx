@@ -73,7 +73,3 @@ const AddCreditScreen = () => {
 };
 
 export default AddCreditScreen;
-function useRoute() {
-    throw new Error('Function not implemented.');
-}
-

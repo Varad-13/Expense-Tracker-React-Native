@@ -25,7 +25,7 @@ const WipScreen = () => {
     },
     container: {
       flex: 1,
-      backgroundColor: theme.colors.backdrop
+      backgroundColor: theme.colors.surface
     },
     friend: {
       flexDirection: 'row',
@@ -119,7 +119,7 @@ const WipScreen = () => {
         <Appbar.Content title="Work-in-Progress" />
       </Appbar.Header>
       <View style={{flex:1, justifyContent:"center"}}>
-        <Text style={{alignSelf:'center'}}>Oops! Looks like you reached the end</Text>
+        <Text style={{alignSelf:'center', color:theme.colors.onSurface}}>Oops! Looks like you reached the end</Text>
       </View>
     </View>
   );

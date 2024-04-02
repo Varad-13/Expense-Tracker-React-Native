@@ -17,6 +17,8 @@ import AddAPI from './src/screens/add-api';
 import AddCard from './src/screens/add-card';
 import AddCreditScreen from './src/screens/add-credit';
 import AddDebitScreen from './src/screens/add-debit';
+import EditCardLimit from './src/screens/edit-limit';
+import AccountsScreen from './src/screens/accounts'
 
 interface NavRoutes {
   key: string;
@@ -36,7 +38,7 @@ function App(): JSX.Element {
   const renderScene = Screens.SceneMap({
     dashboard: () => <Dashboard/>,
     cards: () => <WipScreen/>,
-    calendar: () => <WipScreen/>,
+    calendar: () => <AccountsScreen/>,
     analytics: () => <WipScreen/>,
     expenses: () => <ExpensesList/>,
   });
@@ -94,6 +96,18 @@ function App(): JSX.Element {
               path="/add-debit/:cardNumber"
               element={ 
                 <AddDebitScreen/>
+              }
+            />
+            <Route
+              path="/edit-limit/:cardNumber"
+              element={ 
+                <EditCardLimit/>
+              }
+            />
+            <Route
+              path="/accounts"
+              element={ 
+                <AccountsScreen/>
               }
             />
             <Route

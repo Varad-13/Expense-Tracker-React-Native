@@ -75,7 +75,3 @@ const AddDebitScreen = () => {
 };
 
 export default AddDebitScreen;
-function useRoute() {
-    throw new Error('Function not implemented.');
-}
-

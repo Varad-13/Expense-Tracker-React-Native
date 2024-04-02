@@ -304,3 +304,44 @@ export const postAddTransaction = async (data: any): Promise<AxiosResponse | nul
     return null;
   }
 };
+
+export const putCardLimit = async (data:any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    // Set up the request body with the provided data
+    const body = {
+      card_number: data.card_number,
+      limits: parseInt(data.limits)
+    };
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      url: `${apiConfig.apiUrl}/update-limit/`,
+      headers,
+      data: body, // Include the data in the request config
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    
+    return response;
+  } catch (error) {
+    console.error('Error making POST request:', error);
+    return null;
+  }
+};

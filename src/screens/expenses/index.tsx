@@ -48,7 +48,7 @@ const ExpenseList = () => {
     },
     container: {
       flex: 1,
-      backgroundColor: theme.colors.backdrop
+      backgroundColor: theme.colors.surface
     },
     friend: {
       flexDirection: 'row',
@@ -151,25 +151,25 @@ const ExpenseList = () => {
               {expenses && expenses.length > 0 ? (
                 <View style={styles.cardContainer}>
                   {expenses.map((expense) => (
-                    <View style={styles.atmCard}>
-                        <View key={expense.id} style={styles.expenseItem}>
-                            <Text style={styles.expenseText}>{expense.category}</Text>
-                            <Text style={styles.expenseText}>{expense.amount}</Text>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <IconButton
-                                icon="delete"
-                                iconColor={theme.colors.error}
-                                size={20}
-                                onPress={() => console.log('Pressed')}
-                            />
-                            <IconButton
-                                icon="pencil"
-                                iconColor={theme.colors.secondary}
-                                size={20}
-                                onPress={() => console.log('Pressed')}
-                            />
-                        </View>
+                    <View key={expense.id} style={styles.atmCard}>
+                      <View style={styles.expenseItem}>
+                        <Text style={styles.expenseText}>{expense.category}</Text>
+                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
+                      </View>
+                      <View style={styles.buttonContainer}>
+                        <IconButton
+                          icon="delete"
+                          iconColor={theme.colors.error}
+                          size={20}
+                          onPress={() => console.log('Pressed')}
+                        />
+                        <IconButton
+                          icon="pencil"
+                          iconColor={theme.colors.secondary}
+                          size={20}
+                          onPress={() => console.log('Pressed')}
+                        />
+                      </View>
                     </View>
                   ))}
                 </View>
