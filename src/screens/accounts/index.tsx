@@ -195,35 +195,11 @@ const AccountsScreen = () => {
               <View style={styles.cardContainer}>
                 {cardsData.map((item) => (
                   <Card key={item.cardNumber} style={styles.atmCard}>
-                    <IconButton
-                      icon="pencil"
-                      size={24}
-                      onPress={() => {
-                        navigate(`/edit-limit/${item.cardNumber}`)
-                      }}
-                      style={styles.editButton}
-                    />
                     <Text style={styles.cardText}>{item.holderName}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                     <Text style={styles.cardNumber}>{item.cardNumber}</Text>
                     <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
                     <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
-                    <View style={styles.buttonContainer}>
-                      <Button
-                        mode="contained"
-                        onPress={() => navigate(`/add-debit/${item.cardNumber}`)}
-                        style={styles.addButton}
-                      >
-                        Add expense
-                      </Button>
-                      <Button
-                        mode="contained"
-                        onPress={() => navigate(`/add-credit/${item.cardNumber}`)}
-                        style={styles.addButton}
-                      >
-                        Add repayment
-                      </Button>
-                    </View>
                   </Card>
                 ))}
                 <Card style={styles.atmCard}>

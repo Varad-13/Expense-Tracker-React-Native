@@ -14,7 +14,7 @@ import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
-import { getOutgoing } from '../../api/Api';
+import { getOutgoing, getTransactions } from '../../api/Api';
 
 const ExpenseList = () => {
   const navigate = useNavigate();
@@ -26,16 +26,9 @@ const ExpenseList = () => {
   useEffect(() => {    
     const fetchData = async () => {
       try {
-        const expensesResponse = await getOutgoing();
+        const expensesResponse = await getTransactions();
         if(expensesResponse && expensesResponse.data){
           addExpenses(expensesResponse.data)
-        }
-        if (incomingResponse && incomingResponse.data) {
-          setIncomingTransactions(incomingResponse.data)
-        }
-
-        if (outgoingResponse && outgoingResponse.data) {
-          setOutgoingTransactions(outgoingResponse.data)
         }
 
         setLoading(false);
@@ -184,6 +177,7 @@ const ExpenseList = () => {
                       </View>
                       <View style={styles.buttonContainer}>
                         <View>
+                          <Text style={styles.expenseAmount}>{expense.credit_debit}</Text>
                           <Text style={styles.expenseAmount}>₹{expense.amount}</Text>
                         </View>
                         <View style={{flexDirection:"row"}}>

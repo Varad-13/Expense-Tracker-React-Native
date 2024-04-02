@@ -114,7 +114,7 @@ const Dashboard = () => {
       borderWidth: 3,
     },
     graphContainer: {
-      backgroundColor: theme.colors.tertiaryContainer,
+      backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
@@ -178,7 +178,7 @@ const Dashboard = () => {
       borderWidth: 2,
     },
     incomeContainer: {
-      backgroundColor: "rgba(100,200,100,0.3)",
+      backgroundColor: theme.colors.surface,
       borderRadius: 8,
       width: screenWidth-32,
       flexShrink: 1,
@@ -188,7 +188,7 @@ const Dashboard = () => {
       borderWidth: 2,
     },
     outgoingContainer: {
-      backgroundColor: "rgba(200,100,100,0.3)",
+      backgroundColor: theme.colors.surface,
       borderRadius: 8,
       width: screenWidth-32,
       flexShrink: 1,
@@ -224,8 +224,8 @@ const Dashboard = () => {
   });
 
   const chartConfig = {
-    backgroundGradientFrom: theme.colors.tertiaryContainer,
-    backgroundGradientTo: theme.colors.tertiaryContainer,
+    backgroundGradientFrom: theme.colors.surfaceVariant,
+    backgroundGradientTo: theme.colors.surfaceVariant,
     color: (opacity = 1) => {
       const colorOnSurface = Appearance.getColorScheme() === 'dark'
       ? `rgba(255, 255, 255, ${opacity})` 

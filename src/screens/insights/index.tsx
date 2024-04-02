@@ -128,7 +128,7 @@ const InsightsScreen = () => {
       columnGap: 8,
     },
     expensesContainer: {
-      backgroundColor: theme.colors.backdrop,
+      backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5,
