@@ -173,15 +173,15 @@ const AccountsScreen = () => {
 
 
   const renderContent = () => {
-    while(loading){
-      return(
-        <View style={styles.container}>
-          <Appbar.Header style={styles.appBar}>
-            <Appbar.Content title="Home" /> 
-          </Appbar.Header>
-          <ActivityIndicator animating={true} size={200} style={{marginTop:40}}/>
-        </View>
-      ) 
+    if(loading){
+        return(
+            <View style={styles.container}>
+            <Appbar.Header style={styles.appBar}>
+                <Appbar.Content title="Home" /> 
+            </Appbar.Header>
+            <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+            </View>
+        ) 
     }
     return (    
       <View style={styles.container}>

@@ -48,7 +48,7 @@ const AddApi = () => {
     <View style={styles.container}>
      <Appbar.Header>
         <Appbar.BackAction onPress={() => navigate("/index")}/>
-        <Appbar.Content title="Work-in-Progress" />
+        <Appbar.Content title="API Setup" />
       </Appbar.Header>
       <Text style={styles.title}>Connection to backend server failed! Please setup API routes and API key</Text>
       <TextInput

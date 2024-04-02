@@ -1,4 +1,4 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import {Appearance, View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator } from 'react-native';
 
 import {
   LineChart,
@@ -29,7 +29,6 @@ const ExpenseList = () => {
         const expensesResponse = await getOutgoing();
         if(expensesResponse && expensesResponse.data){
           addExpenses(expensesResponse.data)
-          console.log(expensesResponse.data)
         }
 
         setLoading(false);
@@ -100,7 +99,8 @@ const ExpenseList = () => {
     },
     buttonContainer: {
       flexDirection: 'row',
-      justifyContent: 'flex-end',
+      flex: 1,
+      justifyContent: "space-between",
       gap: 6,
       marginTop: 8,
     },  
@@ -132,14 +132,32 @@ const ExpenseList = () => {
       marginBottom: 8,
     },
     expenseText: {
-      fontSize: 16,
+      fontFamily:"sans-serif-condensed",
+      fontSize: 20,
+      color: theme.colors.onSurfaceVariant,
+    },
+    expenseTitle: {
+      fontFamily:"sans-serif-light",
+      fontSize: 18,
+      color: theme.colors.onSurfaceVariant,
+    },
+    expenseAmount: {
+      fontFamily:"monospace",
+      fontSize: 18,
       color: theme.colors.onSurfaceVariant,
     },
   });
 
   const renderContent = () => {
     if(loading){
-      console.log(loading)
+      return(
+        <View style={styles.container}>
+          <Appbar.Header style={styles.appBar}>
+            <Appbar.Content title="Home" /> 
+          </Appbar.Header>
+          <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+        </View>
+      ) 
     }
     return (
       <View style={styles.container}>
@@ -154,21 +172,26 @@ const ExpenseList = () => {
                     <View key={expense.id} style={styles.atmCard}>
                       <View style={styles.expenseItem}>
                         <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
+                        <Text style={styles.expenseTitle}>{expense.card}</Text>
                       </View>
                       <View style={styles.buttonContainer}>
-                        <IconButton
-                          icon="delete"
-                          iconColor={theme.colors.error}
-                          size={20}
-                          onPress={() => console.log('Pressed')}
-                        />
-                        <IconButton
-                          icon="pencil"
-                          iconColor={theme.colors.secondary}
-                          size={20}
-                          onPress={() => console.log('Pressed')}
-                        />
+                        <View>
+                          <Text style={styles.expenseAmount}>₹{expense.amount}</Text>
+                        </View>
+                        <View style={{flexDirection:"row"}}>
+                          <IconButton
+                            icon="delete"
+                            iconColor={theme.colors.error}
+                            size={20}
+                            onPress={() => console.log('Pressed')}
+                          />
+                          <IconButton
+                            icon="pencil"
+                            iconColor={theme.colors.secondary}
+                            size={20}
+                            onPress={() => console.log('Pressed')}
+                          />
+                        </View>
                       </View>
                     </View>
                   ))}

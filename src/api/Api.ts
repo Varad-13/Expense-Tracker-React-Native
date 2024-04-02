@@ -40,7 +40,6 @@ export const getAuthData = async (): Promise<AxiosResponse | null> => {
     };
     // Make the API call
     const response = await axios(config);
-    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error('Error making GET request:', error);
