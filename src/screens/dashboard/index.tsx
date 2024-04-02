@@ -222,6 +222,10 @@ const Dashboard = () => {
       : `rgba(0, 0, 0, ${opacity / 1.2})`; 
       return colorOnSurface
     },
+    propsForLabels: { 
+      fontSize : 12,
+      fontFamily: "sans-serif-condensed"
+    }
   };
 
   // Extract accountHolder values from the data array
@@ -322,25 +326,24 @@ const Dashboard = () => {
   
           
           <View style={styles.cardContainer}>
-              <View style={{alignSelf: 'center'}}>
-                <View style={styles.graphContainer}>
-                  <Text style={styles.expensesTitle}>Monthly Limits</Text>
+            <View style={{alignSelf: 'center'}}>
+              <View style={styles.graphContainer}>
+                <Text style={styles.expensesTitle}>Monthly Limits</Text>
                   <ProgressChart
                     data={chartData}
-                    width={screenWidth-48}
+                    width={screenWidth*0.85}
                     height={220}
                     strokeWidth={16}
                     radius={32}
                     chartConfig={chartConfig}
-                    hideLegend={false}
-                    style={styles.cardNumber}
+                    style = {{flexShrink:1}}
+                    
                     />
-                    <Text style={styles.graphText}>Limits: ₹{totalLimits.expense}/{totalLimits.limit}</Text>
-                    <Text style={styles.graphText}>Total Usage: {totalLimits.percentage}%</Text>
-                </View>
-                
+                  <Text style={styles.graphText}>Limits: ₹{totalLimits.expense}/{totalLimits.limit}</Text>
+                  <Text style={styles.graphText}>Total Usage: {totalLimits.percentage}%</Text>
               </View>
             </View>
+          </View>
           
             
             <View style={styles.cardContainer}>

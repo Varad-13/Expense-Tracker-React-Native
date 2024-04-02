@@ -1,4 +1,4 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView, ActivityIndicator } from 'react-native';
+import {Appearance, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 
 import {
   LineChart,
@@ -9,7 +9,7 @@ import {
   StackedBarChart
 } from "react-native-chart-kit";
 
-import {IconButton, Avatar, Button, Appbar, Card, withTheme, useTheme } from 'react-native-paper';
+import {IconButton, Avatar, Button, Appbar, Card, withTheme, useTheme, ActivityIndicator } from 'react-native-paper';
 import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
@@ -44,7 +44,6 @@ const ExpenseList = () => {
   const styles = StyleSheet.create({
     appBar: {
       backgroundColor: theme.colors.surfaceVariant,
-      elevation: 1,
     },
     container: {
       flex: 1,
@@ -63,7 +62,7 @@ const ExpenseList = () => {
       alignSelf: 'center'
     },
     atmCard: {
-      backgroundColor: theme.colors.surfaceVariant,
+      backgroundColor: theme.colors.surface,
       borderRadius: 8,
       padding: 16,
       width: 350,
