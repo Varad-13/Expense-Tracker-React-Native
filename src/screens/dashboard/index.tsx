@@ -149,7 +149,8 @@ const Dashboard = () => {
     },
     cardText: {
       fontFamily: "roboto",
-      fontSize: 16,
+      fontWeight: "100",
+      fontSize: 13,
       marginBottom: 8,
       color: theme.colors.onSurfaceVariant,
     },
@@ -217,8 +218,8 @@ const Dashboard = () => {
     backgroundGradientTo: theme.colors.tertiaryContainer,
     color: (opacity = 1) => {
       const colorOnSurface = Appearance.getColorScheme() === 'dark'
-      ? `rgba(255, 220, 255, ${opacity})` 
-      : `rgba(70, 10, 50, ${opacity})`; 
+      ? `rgba(255, 255, 255, ${opacity})` 
+      : `rgba(0, 0, 0, ${opacity / 1.2})`; 
       return colorOnSurface
     },
   };

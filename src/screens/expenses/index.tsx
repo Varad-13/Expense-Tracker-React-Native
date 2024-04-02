@@ -44,6 +44,7 @@ const ExpenseList = () => {
   const styles = StyleSheet.create({
     appBar: {
       backgroundColor: theme.colors.surfaceVariant,
+      elevation: 1,
     },
     container: {
       flex: 1,
