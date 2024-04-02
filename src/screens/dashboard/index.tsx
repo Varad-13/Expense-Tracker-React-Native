@@ -328,7 +328,7 @@ const Dashboard = () => {
             <View style={styles.cardContainer}>
                 <View style={styles.expensesContainer}>
                     <Text style={styles.cardNumber}>Recent Incomings</Text>
-                    {incomingTransactions.map((expense) => (
+                    {incomingTransactions.slice(0, 3).map((expense) => (
                       <View key={expense.id} style={styles.expenseItem}>
                         <Text style={styles.expenseText}>{expense.category}</Text>
                         <Text style={styles.expenseText}>₹{expense.amount}</Text>
@@ -337,7 +337,7 @@ const Dashboard = () => {
                 </View>
                 <View style={styles.expensesContainer}>
                     <Text style={styles.cardNumber}>Recent Outgoings</Text>
-                    {outgoingTransactions.map((expense) => (
+                    {outgoingTransactions.slice(0, 3).map((expense) => (
                       <View key={expense.id} style={styles.expenseItem}>
                         <Text style={styles.expenseText}>{expense.category}</Text>
                         <Text style={styles.expenseText}>₹{expense.amount}</Text>
