@@ -141,6 +141,12 @@ const Dashboard = () => {
       color: theme.colors.onSurfaceVariant,
       padding: 8,
     },
+    cardTitle: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      color: theme.colors.onSurface,
+    },
     cardText: {
       fontFamily: "roboto",
       fontSize: 16,
@@ -179,6 +185,12 @@ const Dashboard = () => {
       alignSelf: 'center',
       borderColor: theme.colors.outline,
       borderWidth: 2,
+    },
+    expensesTitle: {
+      fontSize: 22,
+      fontWeight: 'bold',
+      marginBottom: 16,
+      color: theme.colors.onSurface,
     },
     expenseItem: {
       flexDirection: 'row',
@@ -256,7 +268,7 @@ const Dashboard = () => {
                       }}
                       style={styles.editButton}
                     />
-                    <Text style={styles.cardText}>{item.holderName}</Text>
+                    <Text style={styles.cardTitle}>{item.holderName}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                     <Text style={styles.cardNumber}>**** **** **** {item.cardNumber.slice(12,16)}</Text>
                     <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
@@ -311,7 +323,7 @@ const Dashboard = () => {
           <View style={styles.cardContainer}>
               <View style={{alignSelf: 'center'}}>
                 <View style={styles.graphContainer}>
-                  <Text style={styles.cardNumber}>Monthly Limits</Text>
+                  <Text style={styles.expensesTitle}>Monthly Limits</Text>
                   <ProgressChart
                     data={chartData}
                     width={screenWidth-48}
@@ -332,7 +344,7 @@ const Dashboard = () => {
             
             <View style={styles.cardContainer}>
                 <View style={styles.expensesContainer}>
-                    <Text style={styles.cardNumber}>Recent Incomings</Text>
+                    <Text style={styles.expensesTitle}>Recent Incomings</Text>
                     {incomingTransactions.slice(0, 3).map((expense) => (
                       <View key={expense.id} style={styles.expenseItem}>
                         <Text style={styles.expenseText}>{expense.category}</Text>
@@ -341,7 +353,7 @@ const Dashboard = () => {
                     ))}
                 </View>
                 <View style={styles.expensesContainer}>
-                    <Text style={styles.cardNumber}>Recent Outgoings</Text>
+                    <Text style={styles.expensesTitle}>Recent Outgoings</Text>
                     {outgoingTransactions.slice(0, 3).map((expense) => (
                       <View key={expense.id} style={styles.expenseItem}>
                         <Text style={styles.expenseText}>{expense.category}</Text>
