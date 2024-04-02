@@ -135,16 +135,20 @@ const Dashboard = () => {
       borderWidth: 2,
     },
     graphText: {
-      fontSize: 18,
+      fontFamily: "monospace",
+      fontWeight: "bold",
+      fontSize: 14,
       color: theme.colors.onSurfaceVariant,
       padding: 8,
     },
     cardText: {
-      fontSize: 18,
+      fontFamily: "roboto",
+      fontSize: 16,
       marginBottom: 8,
       color: theme.colors.onSurfaceVariant,
     },
     cardNumber: {
+      fontFamily: "monospace",
       fontSize: 22,
       fontWeight: 'bold',
       marginBottom: 16,
@@ -183,6 +187,7 @@ const Dashboard = () => {
       marginBottom: 8,
     },
     expenseText: {
+      fontFamily: 'sans-serif-condensed',
       fontSize: 16,
       color: theme.colors.onSurfaceVariant,
     },
@@ -253,7 +258,7 @@ const Dashboard = () => {
                     />
                     <Text style={styles.cardText}>{item.holderName}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
-                    <Text style={styles.cardNumber}>{item.cardNumber}</Text>
+                    <Text style={styles.cardNumber}>**** **** **** {item.cardNumber.slice(12,16)}</Text>
                     <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
                     <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
                     <View style={styles.buttonContainer}>
