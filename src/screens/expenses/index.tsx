@@ -133,12 +133,13 @@ const ExpenseList = () => {
     },
     expenseText: {
       fontFamily:"sans-serif-condensed",
-      fontSize: 20,
+      fontWeight:"100",
+      fontSize: 25,
       color: theme.colors.onSurfaceVariant,
     },
     expenseTitle: {
       fontFamily:"sans-serif-light",
-      fontSize: 18,
+      fontSize: 16,
       color: theme.colors.onSurfaceVariant,
     },
     expenseAmount: {

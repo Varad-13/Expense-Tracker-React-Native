@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { TextInput, Button, Text, useTheme, Appbar, IconButton } from 'react-native-paper';
 import { saveApiConfig } from '../../api/ApiConfig';
 import { useNavigate } from 'react-router-native';
@@ -15,6 +15,7 @@ const AddApi = () => {
     container: {
       flex: 1,
       backgroundColor: theme.colors.surface,
+      padding:16,
     },
     input: {
       marginBottom: 10,
@@ -50,24 +51,28 @@ const AddApi = () => {
         <Appbar.BackAction onPress={() => navigate("/index")}/>
         <Appbar.Content title="API Setup" />
       </Appbar.Header>
-      <Text style={styles.title}>Connection to backend server failed! Please setup API routes and API key</Text>
-      <TextInput
-        label="API Key"
-        value={apiKey}
-        onChangeText={setApiKey}
-        style={styles.input}
-        keyboardType="default" // Ensure the correct keyboard type
-      />
-      <TextInput
-        label="API URL"
-        value={apiUrl}
-        onChangeText={setApiUrl}
-        style={styles.input}
-        keyboardType="default" // Ensure the correct keyboard type
-      />
-      <Button mode="contained" onPress={handleSaveConfig} style={styles.button}>
-        Save Configuration
-      </Button>
+      <ScrollView style={{padding:16}}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Connection to backend server failed! Please setup API routes and API key</Text>
+          <TextInput
+            label="API Key"
+            value={apiKey}
+            onChangeText={setApiKey}
+            style={styles.input}
+            keyboardType="default" // Ensure the correct keyboard type
+          />
+          <TextInput
+            label="API URL"
+            value={apiUrl}
+            onChangeText={setApiUrl}
+            style={styles.input}
+            keyboardType="default" // Ensure the correct keyboard type
+          />
+          <Button mode="contained" onPress={handleSaveConfig} style={styles.button}>
+            Save Configuration
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };

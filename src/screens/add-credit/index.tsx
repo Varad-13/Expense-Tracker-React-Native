@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, Button, IconButton, TextInput, useTheme } from 'react-native-paper';
 import { postAddTransaction } from '../../api/Api'; // Assuming your api.ts file is in the same directory
 import { useNavigate, useParams } from 'react-router-native';
@@ -53,21 +53,25 @@ const AddCreditScreen = () => {
         <Appbar.BackAction onPress={() => navigate("/index")}/>
         <Appbar.Content title="Add Repayment" />
       </Appbar.Header>
-      <TextInput
-        label="Amount"
-        value={formData.amount}
-        onChangeText={(text) => handleInputChange('amount', text)}
-      />
+      <ScrollView style={{padding: 16}}>
+        <View style={styles.container}>
+          <TextInput
+            label="Amount"
+            value={formData.amount}
+            onChangeText={(text) => handleInputChange('amount', text)}
+          />
 
-      <TextInput
-        label="Category"
-        value={formData.category}
-        onChangeText={(text) => handleInputChange('category', text)}
-      />
+          <TextInput
+            label="Category"
+            value={formData.category}
+            onChangeText={(text) => handleInputChange('category', text)}
+          />
 
-      <Button mode="contained" onPress={handleAddCredit} style={styles.addButton}>
-        Add Credit
-      </Button>
+          <Button mode="contained" onPress={handleAddCredit} style={styles.addButton}>
+            Add Credit
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, Button, IconButton, TextInput, useTheme } from 'react-native-paper';
 import { putCardLimit } from '../../api/Api'; // Assuming your api.ts file is in the same directory
 import { useNavigate, useParams } from 'react-router-native';
@@ -50,16 +50,18 @@ const EditCardLimit = () => {
         <Appbar.BackAction onPress={() => navigate("/index")}/>
         <Appbar.Content title="Edit Limit" />
       </Appbar.Header>
-      <View>
-        <TextInput
-            label="New Limit"
-            value={formData.limits}
-            onChangeText={(text) => handleInputChange('limits', text)}
-        />
-        <Button mode="contained" onPress={handleLimitChange} style={styles.addButton}>
-            Set New Limit
-        </Button>
-      </View>
+      <ScrollView style={{padding:16}}>
+        <View style={styles.container}>
+          <TextInput
+              label="New Limit"
+              value={formData.limits}
+              onChangeText={(text) => handleInputChange('limits', text)}
+          />
+          <Button mode="contained" onPress={handleLimitChange} style={styles.addButton}>
+              Set New Limit
+          </Button>
+        </View>
+      </ScrollView>
     </View>
   );
 };

@@ -135,9 +135,8 @@ const Dashboard = () => {
       borderWidth: 2,
     },
     graphText: {
-      fontFamily: "monospace",
-      fontWeight: "bold",
-      fontSize: 14,
+      fontFamily: 'sans-serif',
+      fontSize: 16,
       color: theme.colors.onSurfaceVariant,
       padding: 8,
     },
