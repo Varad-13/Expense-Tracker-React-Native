@@ -74,8 +74,9 @@ const InsightsScreen = () => {
       fontFamily: "sans-serif-condensed"
     }
   };
-  const expenseData = outgoingTransactions ? outgoingTransactions.map(item => item.amount): [];
-  const repaymentData = incomingTransactions ? incomingTransactions.map(item => item.amount): [];
+  const expenseData = (outgoingTransactions ?? []).map(item => item.amount ?? 0);
+  const repaymentData = (incomingTransactions ?? []).map(item => item.amount ?? 0);
+
   const expenses = {
     datasets: [{
       data: expenseData,
@@ -164,7 +165,7 @@ const InsightsScreen = () => {
             <Appbar.Header style={styles.appBar}>
               <Appbar.Content title="Monthly Analytics" /> 
             </Appbar.Header>
-            <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+            <ActivityIndicator animating={true} style={{marginTop:60}}/>
           </View>
         ) 
       }

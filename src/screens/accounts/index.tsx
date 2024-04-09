@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions, Pressable,  } from 'react-native';
-import { IconButton, Card, withTheme, useTheme, ActivityIndicator, Appbar, Alert } from 'react-native-paper';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Pressable, Alert } from 'react-native';
+import { IconButton, Card, withTheme, useTheme, ActivityIndicator, Appbar,  } from 'react-native-paper';
 import { useNavigate } from 'react-router-native';
 import { getCards, deleteCard } from '../../api/Api';
 
@@ -12,21 +12,23 @@ const AccountsScreen = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const screenWidth = Dimensions.get("window").width;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const cardsResponse = await getCards();
+  const fetchData = async () => {
+    try {
+      const cardsResponse = await getCards();
 
-        if (cardsResponse && cardsResponse.data) {
-          setCardsData(cardsResponse.data);
-        }
-
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setLoading(false);
+      if (cardsResponse && cardsResponse.data) {
+        setCardsData(cardsResponse.data);
       }
+
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
+    
 
     fetchData();
   }, []);
@@ -74,8 +76,15 @@ const AccountsScreen = () => {
       color: theme.colors.onSurfaceVariant,
       padding: 8,
     },
-    cardText: {
+    cardTitle: {
       fontSize: 18,
+      fontWeight: 'bold',
+      color: theme.colors.onSurface,
+    },
+    cardText: {
+      fontFamily: "roboto",
+      fontWeight: "100",
+      fontSize: 13,
       marginBottom: 8,
       color: theme.colors.onSurfaceVariant,
     },
@@ -142,7 +151,7 @@ const AccountsScreen = () => {
       };
       await deleteCard(data);
       // After successful deletion, update the state to reflect the changes
-      Alert.alert('Success', 'Card deleted successfully.');
+      fetchData();
     } catch (error) {
       console.error('Error deleting card:', error);
       // Handle error if needed
@@ -156,7 +165,7 @@ const AccountsScreen = () => {
             <Appbar.Header style={styles.appBar}>
               <Appbar.Content title="Cards" /> 
             </Appbar.Header>
-            <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+            <ActivityIndicator animating={true} style={{marginTop:60}}/>
           </View>
         ) 
     }
@@ -171,22 +180,23 @@ const AccountsScreen = () => {
           <View style={styles.cardContainer}>
             {cardsData.map((item) => (
               <Card style={styles.atmCard} key={item.cardNumber}>
+                <View style={{flex:1,   flexDirection:"row", alignItems:"baseline", justifyContent:"space-between", marginTop:"1"}}>
+                  <Text style={styles.cardTitle}>{item.nickname}</Text>
+                  <IconButton
+                      icon="delete"
+                      size={20}
+                      iconColor={theme.colors.error}
+                      onPress={() => handleDeleteCard(item.cardNumber)}
+                    />
+                </View>
                 <Text style={styles.cardText}>{item.holderName}</Text>
                 <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
-                <Text style={styles.cardNumber}>
-                  {expandedCard === item.cardNumber
-                    ? item.cardNumber.replace(/\d{4}(?=.)/g, '$& ')
-                    : `**** **** **** ${item.cardNumber.slice(-4)}`}
-                </Text>
-                <Text style={styles.cardText}>{item.cardProvider}</Text>
-                <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
-                <View style={styles.editButton}>
-                  <IconButton
-                    icon="delete"
-                    size={20}
-                    iconColor={theme.colors.error}
-                    onPress={() => handleDeleteCard(item.cardNumber)}
-                  />
+                <View style={{flex:1,   flexDirection:"row", alignItems:"baseline", justifyContent:"space-between"}}>
+                  <Text style={styles.cardNumber}>
+                    {expandedCard === item.cardNumber
+                      ? item.cardNumber.replace(/\d{4}(?=.)/g, '$& ')
+                      : `**** **** **** ${item.cardNumber.slice(-4)}`}
+                  </Text>
                   <IconButton
                     icon="credit-card-chip"
                     size={20}
@@ -194,6 +204,22 @@ const AccountsScreen = () => {
                     onPress={() => {
                       toggleCardVisibility(item.cardNumber);
                     }}
+                  />
+                </View>
+                <Text style={styles.cardText}>{item.cardProvider}</Text>
+                <View style={{flex:1,   flexDirection:"row", alignItems:"baseline", }}>
+                  <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
+                  <IconButton
+                    icon="pencil"
+                    size={20}
+                    iconColor={theme.colors.onSurface}
+                    onPress={() => handleDeleteCard(item.cardNumber)}
+                  />
+                  <IconButton
+                    icon="file-document-multiple-outline"
+                    size={20}
+                    iconColor={theme.colors.onSurface}
+                    onPress={() => handleDeleteCard(item.cardNumber)}
                   />
                 </View>
               </Card>

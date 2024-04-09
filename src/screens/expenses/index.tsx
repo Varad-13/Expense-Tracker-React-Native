@@ -156,7 +156,7 @@ const ExpenseList = () => {
           <Appbar.Header style={styles.appBar}>
             <Appbar.Content title="Home" /> 
           </Appbar.Header>
-          <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+          <ActivityIndicator animating={true} style={{marginTop:60}}/>
         </View>
       ) 
     }

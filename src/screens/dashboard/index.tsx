@@ -263,7 +263,7 @@ const Dashboard = () => {
             <Appbar.Header style={styles.appBar}>
               <Appbar.Content title="Home" /> 
             </Appbar.Header>
-            <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
+            <ActivityIndicator animating={true} style={{marginTop:60}}/>
           </View>
         ) 
       }
@@ -282,12 +282,6 @@ const Dashboard = () => {
                   <Card key={item.cardNumber} style={styles.atmCard}>
                     <View style={styles.editButton}>
                       <IconButton
-                          icon="camera"
-                          size={20}
-                          onPress={() => navigate(`/camera/${item.cardNumber}`)}
-                          style={{alignSelf:"center"}}
-                      />
-                      <IconButton
                         icon="pencil"
                         size={20}
                         onPress={() => {
@@ -296,7 +290,7 @@ const Dashboard = () => {
                         style={{alignSelf:"center"}}
                       />
                     </View>
-                    <Text style={styles.cardTitle}>{item.holderName}</Text>
+                    <Text style={styles.cardTitle}>{item.nickname}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                     <Text style={styles.cardNumber}>**** **** **** {item.cardNumber.slice(12,16)}</Text>
                     <Text style={styles.cardText}>{item.cardProvider}</Text>
@@ -314,7 +308,7 @@ const Dashboard = () => {
                         onPress={() => navigate(`/add-credit/${item.cardNumber}`)}
                         style={styles.addButton}
                       >
-                        Add repayment
+                        Add balance
                       </Button>
                     </View>
                   </Card>
