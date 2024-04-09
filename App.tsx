@@ -31,14 +31,14 @@ function App(): JSX.Element {
   const [index, setIndex] = useState(0);
   const [routes] = useState<NavRoutes[]>([
     {key: 'dashboard', title: 'Home', unfocusedIcon:'home-outline', focusedIcon: 'home'},
-    {key: 'calendar', title: 'Accounts', unfocusedIcon: 'credit-card-chip-outline', focusedIcon: 'credit-card'},
-    {key: 'analytics', title: 'Analytics', focusedIcon: 'google-analytics'},
+    {key: 'cards', title: 'Cards', unfocusedIcon: 'credit-card-outline', focusedIcon: 'credit-card-multiple'},
+    {key: 'analytics', title: 'Analytics', focusedIcon: 'chart-donut-variant'},
     {key: 'expenses', title: 'Transactions', unfocusedIcon: 'file-document-outline', focusedIcon: 'file-document'},
   ]);
 
   const renderScene = Screens.SceneMap({
     dashboard: () => <Dashboard/>,
-    calendar: () => <AccountsScreen/>,
+    cards: () => <AccountsScreen/>,
     analytics: () => <InsightsScreen/>,
     expenses: () => <ExpensesList/>,
   });

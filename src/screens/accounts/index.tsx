@@ -1,56 +1,18 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView,  } from 'react-native';
-
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
-
-import {ActivityIndicator, IconButton, Avatar, Appbar, Button, Card, withTheme, useTheme } from 'react-native-paper';
-import {useNavigate} from 'react-router-native';
-
-import { Dimensions } from "react-native";
-import { useEffect, useState } from 'react';
-import { saveApiConfig, getApiConfig } from '../../api/ApiConfig';
-import { getAuthData, getLimits, getCards, getIncoming, getOutgoing, getTotalLimits } from '../../api/Api';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions, Pressable,  } from 'react-native';
+import { IconButton, Card, withTheme, useTheme, ActivityIndicator, Appbar, Alert } from 'react-native-paper';
+import { useNavigate } from 'react-router-native';
+import { getCards, deleteCard } from '../../api/Api';
 
 const AccountsScreen = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const screenWidth = Dimensions.get("window").width;
-  const [cardsData, setCardsData] = useState(null); 
+  const [cardsData, setCardsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [expandedCard, setExpandedCard] = useState(null);
+  const screenWidth = Dimensions.get("window").width;
 
   useEffect(() => {
-    const checkApiConfigAndNavigate = async () => {
-      try {
-        // Check API configuration
-        // Replace this with your actual logic to check if the API configuration exists
-        const apiConfigExists = await getApiConfig();
-
-        if (!apiConfigExists) {
-          // Navigate to the AddAPI screen if API configuration doesn't exist
-          navigate('/add-api');
-        }
-      } catch (error) {
-        console.error('Error checking API configuration:', error);
-      }
-    };
-
-    const checkConnectivity = async() => {
-      try{
-        const apiConnectivity = await getAuthData();
-        if(!apiConnectivity){
-          navigate('/add-api');
-        }
-      } catch (error) {
-        console.error('Error checking API configuration:', error);
-      }
-    }
-    
     const fetchData = async () => {
       try {
         const cardsResponse = await getCards();
@@ -66,9 +28,6 @@ const AccountsScreen = () => {
       }
     }
 
-    // Call the function to check API config and navigate
-    checkApiConfigAndNavigate();
-    checkConnectivity();
     fetchData();
   }, []);
 
@@ -171,71 +130,83 @@ const AccountsScreen = () => {
     },  
   });
 
+  const toggleCardVisibility = (cardNumber) => {
+    setExpandedCard((prevCard) => (prevCard === cardNumber ? null : cardNumber));
+  };
+
+  const handleDeleteCard = async (cardNumber) => {
+    try {
+      // Call the deleteCard API passing the cardNumber
+      const data = {
+        card_number: cardNumber,
+      };
+      await deleteCard(data);
+      // After successful deletion, update the state to reflect the changes
+      Alert.alert('Success', 'Card deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting card:', error);
+      // Handle error if needed
+    }
+  };  
 
   const renderContent = () => {
-    if(loading){
-        return(
-            <View style={styles.container}>
+    if (loading) {
+      return(
+          <View style={styles.container}>
             <Appbar.Header style={styles.appBar}>
-                <Appbar.Content title="Home" /> 
+              <Appbar.Content title="Cards" /> 
             </Appbar.Header>
             <ActivityIndicator animating={true} size={150} style={{marginTop:60}}/>
-            </View>
+          </View>
         ) 
     }
-    return (    
+
+    return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appBar}>
-          <Appbar.Content title="Home" /> 
+          <Appbar.Content title="Cards" /> 
         </Appbar.Header>
+
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {cardsData && cardsData.length > 0 ? (
-              <View style={styles.cardContainer}>
-                {cardsData.map((item) => (
-                  <Card key={item.cardNumber} style={styles.atmCard}>
-                    <Text style={styles.cardText}>{item.holderName}</Text>
-                    <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
-                    <Text style={styles.cardNumber}>{item.cardNumber}</Text>
-                    <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
-                    <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
-                  </Card>
-                ))}
-                <Card style={styles.atmCard}>
-                  <View style={{flex:1}}>
-                    <IconButton
-                      icon="plus"
-                      size={140}
-                      onPress={() => navigate('/add-card')}
-                      style={{alignSelf:"center"}}
-                    />
-                  </View>
-                </Card>
-              </View>
-            ) : 
-            <View style={styles.cardContainer}>
-              <Card style={styles.atmCard}>
-              <View style={{flex:1}}>
-                <IconButton
-                  icon="plus"
-                  size={140}
-                  onPress={() => navigate('/add-card')}
-                  style={{alignSelf:"center"}}
-                />
-              </View>
-            </Card>
-            </View>
-            }
-          </ScrollView>            
+          <View style={styles.cardContainer}>
+            {cardsData.map((item) => (
+              <Card style={styles.atmCard} key={item.cardNumber}>
+                <Text style={styles.cardText}>{item.holderName}</Text>
+                <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
+                <Text style={styles.cardNumber}>
+                  {expandedCard === item.cardNumber
+                    ? item.cardNumber.replace(/\d{4}(?=.)/g, '$& ')
+                    : `**** **** **** ${item.cardNumber.slice(-4)}`}
+                </Text>
+                <Text style={styles.cardText}>{item.cardProvider}</Text>
+                <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
+                <View style={styles.editButton}>
+                  <IconButton
+                    icon="delete"
+                    size={20}
+                    iconColor={theme.colors.error}
+                    onPress={() => handleDeleteCard(item.cardNumber)}
+                  />
+                  <IconButton
+                    icon="credit-card-chip"
+                    size={20}
+                    iconColor={theme.colors.onPrimaryContainer}
+                    onPress={() => {
+                      toggleCardVisibility(item.cardNumber);
+                    }}
+                  />
+                </View>
+              </Card>
+            ))}
           </View>
         </ScrollView>
       </View>
     );
-  }
-  return(renderContent());
+  };
+
+  return renderContent();
+};
+
+export default withTheme(AccountsScreen);
 
   
-};
-  
-export default withTheme(AccountsScreen) ;

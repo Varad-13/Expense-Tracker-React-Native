@@ -107,18 +107,17 @@ const Dashboard = () => {
       columnGap: 8,
     },
     atmCard: {
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.surface,
       borderRadius: 8,
       padding: 16,
       marginTop: 8,
       width: screenWidth-32,
-      elevation: 5, // Add elevation for shadow effect
       alignSelf: 'center',
       borderColor: theme.colors.primary,
       borderWidth: 3,
     },
     graphContainer: {
-      backgroundColor: theme.colors.surfaceVariant,
+      backgroundColor: theme.colors.secondaryContainer,
       borderRadius: 8,
       width: screenWidth-32,
       elevation: 5, // Add elevation for shadow effect
@@ -126,7 +125,7 @@ const Dashboard = () => {
       flex:1,
       padding: 8,
       alignSelf: 'center',
-      borderColor: theme.colors.outline,
+      borderColor: theme.colors.secondary,
       borderWidth: 2,
     },
     graphText: {
@@ -182,23 +181,23 @@ const Dashboard = () => {
       borderWidth: 2,
     },
     incomeContainer: {
-      backgroundColor: theme.colors.surface,
+      backgroundColor:  'rgba(100,255,100, 0.2)',
       borderRadius: 8,
       width: screenWidth-32,
       flexShrink: 1,
       padding: 8,
       alignSelf: 'center',
-      borderColor: theme.colors.outline,
+      borderColor: 'rgba(0,200,0, 1)',
       borderWidth: 2,
     },
     outgoingContainer: {
-      backgroundColor: theme.colors.surface,
+      backgroundColor: 'rgba(255,100,100, 0.2)',
       borderRadius: 8,
       width: screenWidth-32,
       flexShrink: 1,
       padding: 8,
       alignSelf: 'center',
-      borderColor: theme.colors.outline,
+      borderColor: 'rgba(200,0,0, 1)',
       borderWidth: 2,
     },
     expensesTitle: {
@@ -219,6 +218,8 @@ const Dashboard = () => {
       color: theme.colors.onSurfaceVariant,
     },
     editButton: {
+      flex: 1,
+      flexDirection: "row",
       position: 'absolute',
       top: 4,
       right: 4,
@@ -228,8 +229,8 @@ const Dashboard = () => {
   });
 
   const chartConfig = {
-    backgroundGradientFrom: theme.colors.surfaceVariant,
-    backgroundGradientTo: theme.colors.surfaceVariant,
+    backgroundGradientFrom: theme.colors.secondaryContainer,
+    backgroundGradientTo: theme.colors.secondaryContainer,
     color: (opacity = 1) => {
       const colorOnSurface = Appearance.getColorScheme() === 'dark'
       ? `rgba(255, 255, 255, ${opacity})` 
@@ -279,18 +280,26 @@ const Dashboard = () => {
               <View style={styles.cardContainer}>
                 {cardsData.map((item) => (
                   <Card key={item.cardNumber} style={styles.atmCard}>
-                    <IconButton
-                      icon="pencil"
-                      size={24}
-                      onPress={() => {
-                        navigate(`/edit-limit/${item.cardNumber}`)
-                      }}
-                      style={styles.editButton}
-                    />
+                    <View style={styles.editButton}>
+                      <IconButton
+                          icon="camera"
+                          size={20}
+                          onPress={() => navigate(`/camera/${item.cardNumber}`)}
+                          style={{alignSelf:"center"}}
+                      />
+                      <IconButton
+                        icon="pencil"
+                        size={20}
+                        onPress={() => {
+                          navigate(`/edit-limit/${item.cardNumber}`)
+                        }}
+                        style={{alignSelf:"center"}}
+                      />
+                    </View>
                     <Text style={styles.cardTitle}>{item.holderName}</Text>
                     <Text style={styles.cardText}>Valid Thru: {item.validity}</Text>
                     <Text style={styles.cardNumber}>**** **** **** {item.cardNumber.slice(12,16)}</Text>
-                    <Text style={styles.cardText}>Card Type: {item.cardProvider}</Text>
+                    <Text style={styles.cardText}>{item.cardProvider}</Text>
                     <Text style={styles.cardText}>Limit: ₹{item.limits}</Text>
                     <View style={styles.buttonContainer}>
                       <Button
@@ -363,11 +372,31 @@ const Dashboard = () => {
           <View style={styles.cardContainer}>
             <View style={styles.incomeContainer}>
                 <Text style={styles.expensesTitle}>Total Income</Text>
-                <Text style={styles.expensesTitle}>₹{incomeExpenses.incoming}</Text>
+                <View style={{flex:1,flexDirection: 'row',justifyContent: "space-between"}}>
+                  <Text style={styles.expensesTitle}>₹{incomeExpenses.incoming}</Text>
+                  <IconButton
+                    icon="chevron-right"
+                    color="#000"
+                    size={20}
+                    onPress={() => {
+                      console.log('Arrow icon pressed');
+                    }}
+                  />
+                </View>    
             </View>
             <View style={styles.outgoingContainer}>
                 <Text style={styles.expensesTitle}>Total Expense</Text>
-                <Text style={styles.expensesTitle}>₹{incomeExpenses.expense}</Text>
+                <View style={{flex:1,flexDirection: 'row',justifyContent: "space-between"}}>
+                  <Text style={styles.expensesTitle}>₹{incomeExpenses.expense}</Text>
+                  <IconButton
+                    icon="chevron-right"
+                    color="#000"
+                    size={20}
+                    onPress={() => {
+                      console.log('Arrow icon pressed');
+                    }}
+                  />
+                </View>
             </View>
           </View>
 

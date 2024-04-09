@@ -7,6 +7,7 @@ import DeviceInfo from 'react-native-device-info';
 const getAndroidId = () => {
   const androidId = DeviceInfo.getUniqueId();
   if(androidId._j){
+    console.log(androidId._j)
     return androidId._j;
   } else{
     return "7715cc2590cde8ba";
@@ -410,3 +411,41 @@ export const getIncomingOutgoing = async (): Promise<AxiosResponse | null> => {
     return null;
   }
 };
+
+export const deleteCard = async (data:any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    const body = {
+      card_number: data.card_number
+    }
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'DELETE',
+      url: `${apiConfig.apiUrl}/delete-card/`,
+      headers,
+      data: body,
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    return response;
+  } catch (error) {
+    console.error('Error making GET request:', error);
+    return null;
+  }
+}
