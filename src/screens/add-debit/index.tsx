@@ -41,6 +41,7 @@ const AddDebitScreen = () => {
       flex: 1,
       backgroundColor: theme.colors.surface,
       rowGap: 12,
+      padding: 8
     },
     addButton: {
         marginVertical: 10,

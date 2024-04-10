@@ -33,7 +33,7 @@ const InsightsScreen = () => {
         if (incomingResponse && incomingResponse.data) {
           setIncomingTransactions(incomingResponse.data)
         }
-        if (outgoingResponse && outgoingResponse.data) {
+        if (outgoingResponse && outgoingResponse.data) {  
           setOutgoingTransactions(outgoingResponse.data)
         }
         setLoading(false);
@@ -74,9 +74,8 @@ const InsightsScreen = () => {
       fontFamily: "sans-serif-condensed"
     }
   };
-  const expenseData = (outgoingTransactions ?? []).map(item => item.amount ?? 0);
-  const repaymentData = (incomingTransactions ?? []).map(item => item.amount ?? 0);
-
+  const expenseData = outgoingTransactions ? outgoingTransactions.map(item => item.amount): [];
+  const repaymentData = incomingTransactions ? incomingTransactions.map(item => item.amount): [];
   const expenses = {
     datasets: [{
       data: expenseData,
