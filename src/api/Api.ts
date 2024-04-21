@@ -7,10 +7,9 @@ import DeviceInfo from 'react-native-device-info';
 const getAndroidId = () => {
   const androidId = DeviceInfo.getUniqueId();
   if(androidId._j){
-    console.log(androidId._j)
-    return androidId._j;
+    return "faba38ac14dffec8";
   } else{
-    return "7715cc2590cde8ba";
+    return "faba38ac14dffec8";
   }
 };
 

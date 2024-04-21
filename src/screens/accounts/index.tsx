@@ -156,7 +156,7 @@ const AccountsScreen = () => {
       console.error('Error deleting card:', error);
       // Handle error if needed
     }
-  };  
+  };
 
   const renderContent = () => {
     if (loading) {
