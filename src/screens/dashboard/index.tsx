@@ -373,7 +373,7 @@ const Dashboard = () => {
                     color="#000"
                     size={20}
                     onPress={() => {
-                      console.log('Arrow icon pressed');
+                      navigate('/incoming');
                     }}
                   />
                 </View>    
@@ -387,7 +387,7 @@ const Dashboard = () => {
                     color="#000"
                     size={20}
                     onPress={() => {
-                      console.log('Arrow icon pressed');
+                      navigate('/outgoing');
                     }}
                   />
                 </View>

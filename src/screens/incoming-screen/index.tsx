@@ -14,9 +14,9 @@ import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
-import { deleteTransaction, getOutgoing, getTransactions } from '../../api/Api';
+import { deleteTransaction, getIncoming, getOutgoing, getTransactions } from '../../api/Api';
 
-const ExpenseList = () => {
+const IncomingList = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const screenWidth = Dimensions.get("window").width;
@@ -25,7 +25,7 @@ const ExpenseList = () => {
 
   const fetchData = async () => {
     try {
-      const expensesResponse = await getTransactions();
+      const expensesResponse = await getIncoming();
       if(expensesResponse && expensesResponse.data){
         addExpenses(expensesResponse.data)
       }
@@ -185,7 +185,8 @@ const ExpenseList = () => {
       return(
         <View style={styles.container}>
           <Appbar.Header style={styles.appBar}>
-            <Appbar.Content title="Transactions" /> 
+            <Appbar.BackAction onPress={() => navigate("/")}></Appbar.BackAction>
+            <Appbar.Content title="Incoming" /> 
           </Appbar.Header>
           <ActivityIndicator animating={true} style={{marginTop:60}}/>
         </View>
@@ -194,7 +195,8 @@ const ExpenseList = () => {
     return (
       <View style={styles.container}>
         <Appbar.Header style={styles.appBar}>
-          <Appbar.Content title="Transactions" />
+          <Appbar.BackAction onPress={() => navigate("/")}></Appbar.BackAction>
+          <Appbar.Content title="Incoming" />
         </Appbar.Header>
         <ScrollView showsVerticalScrollIndicator={false}>
             <View>
@@ -243,4 +245,4 @@ const ExpenseList = () => {
   return(renderContent())
 };
   
-export default withTheme(ExpenseList) ;
+export default withTheme(IncomingList) ;
