@@ -31,10 +31,12 @@ const InsightsScreen = () => {
         const incomingResponse = await getIncoming();
         const outgoingResponse = await getOutgoing();
         if (incomingResponse && incomingResponse.data) {
-          setIncomingTransactions(incomingResponse.data)
+          const slicedIncoming = incomingResponse.data.slice(0, 15);
+          setIncomingTransactions(slicedIncoming)
         }
         if (outgoingResponse && outgoingResponse.data) {  
-          setOutgoingTransactions(outgoingResponse.data)
+          const slicedOutgoing = outgoingResponse.data.slice(0, 15);
+          setOutgoingTransactions(slicedOutgoing)
         }
         setLoading(false);
       } catch (error) {

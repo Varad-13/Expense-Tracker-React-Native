@@ -213,7 +213,7 @@ const AccountsScreen = () => {
                     icon="pencil"
                     size={20}
                     iconColor={theme.colors.onSurface}
-                    onPress={() => handleDeleteCard(item.cardNumber)}
+                    onPress={() => navigate(`/edit-limit/${item.cardNumber}`)}
                   />
                   <IconButton
                     icon="file-document-multiple-outline"
