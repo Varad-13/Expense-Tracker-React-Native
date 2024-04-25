@@ -1,4 +1,4 @@
-import {Appearance, View, Text, StyleSheet, Pressable, ScrollView,  } from 'react-native';
+import {Appearance, View, Text, StyleSheet, Pressable, ScrollView, Linking,  } from 'react-native';
 
 import {
   LineChart,
@@ -14,7 +14,8 @@ import {useNavigate} from 'react-router-native';
 
 import { Dimensions } from "react-native";
 import { useEffect, useState } from 'react';
-import { getIncoming, getLimits, getOutgoing } from '../../api/Api';
+import { getAndroidId, getIncoming, getLimits, getOutgoing } from '../../api/Api';
+import { getApiURL } from '../../api/ApiConfig';
 
 const InsightsScreen = () => {
   const navigate = useNavigate();
@@ -159,6 +160,12 @@ const InsightsScreen = () => {
     },
   });
 
+  const handlePress = async () => {
+    const base_url = await getApiURL()
+    const deviceID = await getAndroidId()
+    Linking.openURL(`${base_url}/analytics/${deviceID}/`);
+  }
+
   const renderContent = () => {
     if(loading){
         return(
@@ -178,6 +185,7 @@ const InsightsScreen = () => {
           <View style={{flex:1, justifyContent:"center", padding:8, marginTop:20, gap:8}}>
               <ScrollView>
                 <View style={{flex:1, alignSelf: 'center', gap: 8}}>
+                <Pressable onPress={() => handlePress()}>
                   <LineChart
                   data={repayments}
                   width={screenWidth}
@@ -194,6 +202,7 @@ const InsightsScreen = () => {
                   style = {{flexShrink:1, alignSelf: 'center'}}
                   bezier
                   />
+                </Pressable>
                   <Text style={{alignSelf:"center", color:theme.colors.onSurface}}>Expenses</Text>
                   <Pressable onPress={() => navigate('/incoming')}>
                     <View style={styles.expensesContainer}>

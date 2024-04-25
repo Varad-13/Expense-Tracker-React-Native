@@ -4,7 +4,7 @@ import { getApiConfig } from './ApiConfig';
 import DeviceInfo from 'react-native-device-info';
 
 
-const getAndroidId = () => {
+export const getAndroidId = () => {
   const androidId = DeviceInfo.getUniqueId();
   if(androidId._j){
     return "faba38ac14dffec8";

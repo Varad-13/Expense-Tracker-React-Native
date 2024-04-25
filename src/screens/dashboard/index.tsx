@@ -365,7 +365,7 @@ const Dashboard = () => {
           
           <View style={styles.cardContainer}>
             <View style={styles.incomeContainer}>
-                <Text style={styles.expensesTitle}>Total Income</Text>
+                <Text style={styles.expensesTitle}>Total Saving</Text>
                 <View style={{flex:1,flexDirection: 'row',justifyContent: "space-between"}}>
                   <Text style={styles.expensesTitle}>₹{incomeExpenses.incoming}</Text>
                   <IconButton

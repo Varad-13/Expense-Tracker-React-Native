@@ -31,3 +31,19 @@ export const getApiConfig = async (): Promise<ApiConfig | null> => {
     return null;
   }
 };
+
+export const getApiURL = async (): Promise<string | null> => {
+  try {
+    const apiConfigString = await AsyncStorage.getItem('apiConfig');
+    if (apiConfigString !== null) {
+      const apiConfig: ApiConfig = JSON.parse(apiConfigString);
+      return apiConfig.apiUrl;
+    } else {
+      console.log('API Configuration not found.');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving API Configuration:', error);
+    return null;
+  }
+};
