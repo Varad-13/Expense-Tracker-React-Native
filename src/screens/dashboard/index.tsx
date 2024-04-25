@@ -23,8 +23,8 @@ const Dashboard = () => {
   const screenWidth = Dimensions.get("window").width;
   const [cardsData, setCardsData] = useState(null); 
   const [limitData, setLimitData] = useState(null); 
-  const [incomeExpenses, setIncomgExpense] = useState(null); 
-  const [totalLimits, setTotalLimits] = useState({"expense":"0","limit":"0","percentage":"0"}); 
+  const [incomeExpenses, setIncomeExpense] = useState(null);
+  const [totalLimits, setTotalLimits] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -74,7 +74,7 @@ const Dashboard = () => {
         }
 
         if (incomeExpense && incomeExpense.data) {
-          setIncomgExpense(incomeExpense.data)
+          setIncomeExpense(incomeExpense.data)
         }
 
         setLoading(false);
@@ -373,7 +373,7 @@ const Dashboard = () => {
                     color="#000"
                     size={20}
                     onPress={() => {
-                      console.log('Arrow icon pressed');
+                      navigate('/incoming');
                     }}
                   />
                 </View>    
@@ -387,7 +387,7 @@ const Dashboard = () => {
                     color="#000"
                     size={20}
                     onPress={() => {
-                      console.log('Arrow icon pressed');
+                      navigate('/outgoing');
                     }}
                   />
                 </View>

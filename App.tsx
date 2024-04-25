@@ -20,6 +20,10 @@ import AddDebitScreen from './src/screens/add-debit';
 import EditCardLimit from './src/screens/edit-limit';
 import AccountsScreen from './src/screens/accounts';
 import InsightsScreen from './src/screens/insights';
+import IncomingScreen from './src/screens/incoming-screen';
+import OutgoingScreen from './src/screens/outgoing-screen';
+import EditTransactionAmount from './src/screens/edit-transaction';
+import CardTransaction from './src/screens/card-transaction';
 
 interface NavRoutes {
   key: string;
@@ -120,6 +124,30 @@ function App(): JSX.Element {
               path="/wip"
               element={ 
                 <WipScreen/>
+              }
+            />
+            <Route
+              path="/incoming"
+              element={ 
+                <IncomingScreen/>
+              }
+            />
+            <Route
+              path="/outgoing"
+              element={ 
+                <OutgoingScreen/>
+              }
+            />
+            <Route
+              path="/edit-transaction/:id"
+              element={ 
+                <EditTransactionAmount/>
+              }
+            />
+            <Route
+              path="/card-transaction/:cardNumber"
+              element={ 
+                <CardTransaction/>
               }
             />
           </Routes>

@@ -145,13 +145,29 @@ const AccountsScreen = () => {
 
   const handleDeleteCard = async (cardNumber) => {
     try {
-      // Call the deleteCard API passing the cardNumber
-      const data = {
-        card_number: cardNumber,
-      };
-      await deleteCard(data);
-      // After successful deletion, update the state to reflect the changes
-      fetchData();
+
+      Alert.alert(
+        'Confirm Deletion',
+        'Are you sure you want to delete this card?',
+        [
+          {
+            text: 'No',
+          },
+          {
+            text: 'Yes',
+            onPress: async () => {
+              const data = {
+                card_number: cardNumber,
+              };
+              setLoading(true);
+              await deleteCard(data);
+              // After successful deletion, update the state to reflect the changes
+              fetchData();
+            },
+          },
+        ],
+        { cancelable: true }
+      );
     } catch (error) {
       console.error('Error deleting card:', error);
       // Handle error if needed
@@ -213,13 +229,13 @@ const AccountsScreen = () => {
                     icon="pencil"
                     size={20}
                     iconColor={theme.colors.onSurface}
-                    onPress={() => handleDeleteCard(item.cardNumber)}
+                    onPress={() => navigate(`/edit-limit/${item.cardNumber}`)}
                   />
                   <IconButton
                     icon="file-document-multiple-outline"
                     size={20}
                     iconColor={theme.colors.onSurface}
-                    onPress={() => handleDeleteCard(item.cardNumber)}
+                    onPress={() => navigate(`/card-transaction/${item.cardNumber}`)}
                   />
                 </View>
               </Card>

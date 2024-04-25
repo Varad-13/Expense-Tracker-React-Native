@@ -7,10 +7,9 @@ import DeviceInfo from 'react-native-device-info';
 const getAndroidId = () => {
   const androidId = DeviceInfo.getUniqueId();
   if(androidId._j){
-    console.log(androidId._j)
-    return androidId._j;
+    return "faba38ac14dffec8";
   } else{
-    return "7715cc2590cde8ba";
+    return "faba38ac14dffec8";
   }
 };
 
@@ -346,6 +345,46 @@ export const putCardLimit = async (data:any): Promise<AxiosResponse | null> => {
   }
 };
 
+export const putTransactionAmount = async (data:any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    // Set up the request body with the provided data
+    const body = {
+      id: data.id,
+      amount: parseInt(data.amount)
+    };
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'PUT',
+      url: `${apiConfig.apiUrl}/update-transaction/`,
+      headers,
+      data: body, // Include the data in the request config
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    
+    return response;
+  } catch (error) {
+    console.error('Error making POST request:', error);
+    return null;
+  }
+};
+
 export const getTransactions = async (): Promise<AxiosResponse | null> => {
   try {
     const androidId = getAndroidId();
@@ -412,6 +451,43 @@ export const getIncomingOutgoing = async (): Promise<AxiosResponse | null> => {
   }
 };
 
+export const getCardTransactions = async (data:any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+    
+    const body = {
+      cardNumber: data.cardNumber
+    }
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: `${apiConfig.apiUrl}/get-transaction-card/`,
+      headers,
+      data: body,
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    return response;
+  } catch (error) {
+    console.error('Error making GET request:', error);
+    return null;
+  }
+};
+
 export const deleteCard = async (data:any): Promise<AxiosResponse | null> => {
   try {
     const androidId = getAndroidId();
@@ -430,13 +506,51 @@ export const deleteCard = async (data:any): Promise<AxiosResponse | null> => {
     };
 
     const body = {
-      card_number: data.card_number
+      cardNumber: data.card_number
     }
 
     // Set up the request config
     const config: AxiosRequestConfig = {
       method: 'DELETE',
       url: `${apiConfig.apiUrl}/delete-card/`,
+      headers,
+      data: body,
+      timeout: 5000,
+    };
+    // Make the API call
+    const response = await axios(config);
+    return response;
+  } catch (error) {
+    console.error('Error making GET request:', error);
+    return null;
+  }
+}
+
+export const deleteTransaction = async (data:any): Promise<AxiosResponse | null> => {
+  try {
+    const androidId = getAndroidId();
+
+    // Get API configuration
+    const apiConfig = await getApiConfig();
+    if (!apiConfig) {
+      console.error('API configuration not found.');
+      return null;
+    }
+
+    // Set up the request headers
+    const headers = {
+      'Content-Type': 'application/json',
+      DEVICEID: androidId,
+    };
+
+    const body = {
+      id: data.id
+    }
+
+    // Set up the request config
+    const config: AxiosRequestConfig = {
+      method: 'DELETE',
+      url: `${apiConfig.apiUrl}/delete-transaction/`,
       headers,
       data: body,
       timeout: 5000,

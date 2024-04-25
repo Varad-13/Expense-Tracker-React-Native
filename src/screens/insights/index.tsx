@@ -31,10 +31,12 @@ const InsightsScreen = () => {
         const incomingResponse = await getIncoming();
         const outgoingResponse = await getOutgoing();
         if (incomingResponse && incomingResponse.data) {
-          setIncomingTransactions(incomingResponse.data)
+          const slicedIncoming = incomingResponse.data.slice(0, 15);
+          setIncomingTransactions(slicedIncoming)
         }
         if (outgoingResponse && outgoingResponse.data) {  
-          setOutgoingTransactions(outgoingResponse.data)
+          const slicedOutgoing = outgoingResponse.data.slice(0, 15);
+          setOutgoingTransactions(slicedOutgoing)
         }
         setLoading(false);
       } catch (error) {
@@ -162,7 +164,7 @@ const InsightsScreen = () => {
         return(
           <View style={styles.container}>
             <Appbar.Header style={styles.appBar}>
-              <Appbar.Content title="Monthly Analytics" /> 
+              <Appbar.Content title="Analytics" /> 
             </Appbar.Header>
             <ActivityIndicator animating={true} style={{marginTop:60}}/>
           </View>
@@ -171,7 +173,7 @@ const InsightsScreen = () => {
     return (
         <View style={styles.container}>
           <Appbar.Header style={styles.appBar}>
-            <Appbar.Content title="Monthly Analytics" /> 
+            <Appbar.Content title="Analytics" /> 
           </Appbar.Header>
           <View style={{flex:1, justifyContent:"center", padding:8, marginTop:20, gap:8}}>
               <ScrollView>
@@ -193,25 +195,28 @@ const InsightsScreen = () => {
                   bezier
                   />
                   <Text style={{alignSelf:"center", color:theme.colors.onSurface}}>Expenses</Text>
-
-                  <View style={styles.expensesContainer}>
-                    <Text style={styles.expensesTitle}>Recent Incomings</Text>
-                    {incomingTransactions.map((expense) => (
-                      <View key={expense.id} style={styles.expenseItem}>
-                        <Text style={styles.expenseText}>{expense.category}</Text>
-                        <Text style={styles.expenseText}>₹{expense.amount}</Text>
-                      </View>
-                    ))}
-                  </View>
-                  <View style={styles.expensesContainer}>
-                      <Text style={styles.expensesTitle}>Recent Outgoings</Text>
-                      {outgoingTransactions.map((expense) => (
+                  <Pressable onPress={() => navigate('/incoming')}>
+                    <View style={styles.expensesContainer}>
+                      <Text style={styles.expensesTitle}>Recent Incomings</Text>
+                      {incomingTransactions.map((expense) => (
                         <View key={expense.id} style={styles.expenseItem}>
                           <Text style={styles.expenseText}>{expense.category}</Text>
                           <Text style={styles.expenseText}>₹{expense.amount}</Text>
                         </View>
                       ))}
-                  </View>
+                    </View>
+                  </Pressable>
+                  <Pressable onPress={() => navigate('/outgoing')}>
+                    <View style={styles.expensesContainer}>
+                        <Text style={styles.expensesTitle}>Recent Outgoings</Text>
+                        {outgoingTransactions.map((expense) => (
+                          <View key={expense.id} style={styles.expenseItem}>
+                            <Text style={styles.expenseText}>{expense.category}</Text>
+                            <Text style={styles.expenseText}>₹{expense.amount}</Text>
+                          </View>
+                        ))}
+                    </View>
+                  </Pressable>
                 </View>
               </ScrollView>
           </View>
